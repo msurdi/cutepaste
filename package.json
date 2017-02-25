@@ -1,0 +1,25 @@
+{
+  "name": "cutepaste",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\"  && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "awesome-bootstrap-checkbox": "0.3.7",
+    "babel-cli": "^6.11.4",
+    "babel-core": "^6.13.2",
+    "babel-preset-es2015": "^6.13.2",
+    "bootstrap": "3.3.7",
+    "font-awesome": "^4.6.3",
+    "intercooler": "^1.0.3",
+    "jquery": "^3.1.0",
+    "less": "^2.7.1",
+    "less-plugin-autoprefix": "^1.5.1",
+    "tether": "^1.3.7",
+    "turbolinks": "^5.0.0"
+  }
+}

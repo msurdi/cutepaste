@@ -1,0 +1,26 @@
+{% extends "__layout.html" %}
+{% block content %}
+    <div class="list-group">
+        {% if parent_path %}
+            <a class="list-group-item"
+               href="{% url 'files:ls' parent_path %}">
+                ../
+            </a>
+        {% endif %}
+
+        {% for entry in entries %}
+            <div class="list-group-item">
+                <div class="checkbox no-margin">
+                    <input type="checkbox" title="select" value="">
+                    <label>
+                        <a class=""
+                           href="{% url 'files:ls' entry.relative_path %}">
+                            {{ entry.name }}{% if entry.is_dir %}/{% endif %}
+                        </a>
+                    </label>
+                </div>
+
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

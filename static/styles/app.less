@@ -1,0 +1,68 @@
+@import "_variables.less";
+
+.debug {
+  background-color: orange;
+}
+
+body {
+  padding-top: 50px;
+  padding-bottom: 20px;
+  height: 100%;
+}
+
+html {
+  height: 100%;
+}
+
+.navbar-brand {
+  text-shadow: -1px -1px darken(@navbar-inverse-bg, 10%);
+  font-weight: bolder;
+  font-size: 22px;
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+
+.form-control:focus {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+@media (min-width: 768px) {
+  .navbar-form .input-group > .form-control {
+    width: 37em;
+  }
+}
+
+.padding {
+  padding: 15px;
+}
+
+.no-padding {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.no-margin {
+  margin: 0 !important;
+}
+
+.full-height {
+  height: 100%;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.min-full-width {
+  min-width: 100%;
+}
+
+.scroller {
+  max-height: 100%;
+  overflow-y: scroll;
+}
+
+.middle {
+  vertical-align: middle;
+}
+
