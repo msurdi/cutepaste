@@ -1,5 +1,25 @@
 {% extends "__layout.html" %}
 {% block content %}
+    <div class="btn-group padding-5">
+        <button type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-check"></span>
+        </button>
+        <button type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-scissors"></span>
+        </button>
+        <button type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-copy"></span>
+        </button>
+        <button type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-paste"></span>
+        </button>
+        <button type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-edit"></span>
+        </button>
+        <button type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-trash"></span>
+        </button>
+    </div>
     <div class="list-group">
         {% if parent_path %}
             <a class="list-group-item"
