@@ -4,3 +4,4 @@ rcssmin==1.0.6
 rjsmin==1.0.12
 django-extensions==1.7.4
 gevent==1.2.1
+uwsgi==2.0.14

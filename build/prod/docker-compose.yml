@@ -15,17 +15,5 @@ services:
         aliases:
           - cutepaste
 
-  caddy:
-    image: abiosoft/caddy
-    ports:
-      - "443:443"
-      - "80:80"
-    volumes:
-      - ./Caddyfile:/etc/Caddyfile
-      - ../../.data/caddy/.caddy:/root/.caddy
-    networks:
-      cutepaste:
-        aliases:
-          - caddy
 networks:
   cutepaste:

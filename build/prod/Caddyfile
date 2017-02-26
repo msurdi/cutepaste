@@ -1,5 +1,0 @@
-cutepaste.com {
-    basicauth / msurdi wipwip
-    gzip
-    proxy / cutepaste:8080
-}
