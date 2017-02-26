@@ -1,5 +1,5 @@
 Turbolinks.start();
-console.log("Start!");
+
 document.addEventListener("turbolinks:load", () => {
     processIntercoolerTags();
     restoreCaretPosition();
@@ -11,6 +11,34 @@ $(document).ajaxStart(saveCaretPosition);
 
 $(document).ajaxComplete(restoreCaretPosition);
 
+$(document).on("cp:refreshSelectionButtons", refreshSelectionButtons);
+function refreshSelectionButtons(event, checkboxesSelector, allButtonSelector, noneButtonSelector) {
+    let checkboxes = $(checkboxesSelector);
+    let allButton = $(allButtonSelector);
+    let noneButton = $(noneButtonSelector);
+
+    let anyChecked = checkboxes.filter((i, checkbox) => checkbox.checked).length > 0;
+    if (anyChecked) {
+        allButton.hide();
+        noneButton.show();
+    } else {
+        noneButton.hide();
+        allButton.show();
+    }
+}
+
+$(document).on("cp:selectAll", selectAll);
+
+function selectAll(event, checkboxesSelector) {
+    $(checkboxesSelector).prop("checked", true);
+}
+
+
+$(document).on("cp:selectNone", selectNone);
+
+function selectNone(event, checkboxesSelector) {
+    $(checkboxesSelector).prop("checked", false);
+}
 
 function processIntercoolerTags() {
     if (event.data.timing.visitStart) { // This is to skip initial page load event

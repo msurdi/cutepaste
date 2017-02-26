@@ -1,9 +1,27 @@
 {% extends "__layout.html" %}
 {% block content %}
     <div class="btn-group padding-5">
-        <button type="button" class="btn btn-default">
+        <button id="select-all-button"
+                type="button"
+                class="btn btn-default"
+                data-ic-action="
+                    trigger:'cp:selectAll','.entries .entry-checkbox';
+                    delay:0;
+                    trigger:'cp:refreshSelectionButtons',['.entries .entry-checkbox','#select-all-button','#select-none-button']
+                ">
             <span class="glyphicon glyphicon-check"></span>
         </button>
+        <button id="select-none-button"
+                type="button"
+                class="btn btn-default no-display"
+                data-ic-action="
+                    trigger:'cp:selectNone','.entries .entry-checkbox';
+                    delay:0;
+                    trigger:'cp:refreshSelectionButtons',['.entries .entry-checkbox','#select-all-button','#select-none-button']
+                ">
+            <span class="glyphicon glyphicon-unchecked"></span>
+        </button>
+
         <button type="button" class="btn btn-default">
             <span class="glyphicon glyphicon-scissors"></span>
         </button>
@@ -20,7 +38,7 @@
             <span class="glyphicon glyphicon-trash"></span>
         </button>
     </div>
-    <div class="list-group">
+    <div class="list-group entries">
         {% if parent_path %}
             <a class="list-group-item"
                href="{% url 'files:ls' parent_path %}">
@@ -31,7 +49,14 @@
         {% for entry in entries %}
             <div class="list-group-item">
                 <div class="checkbox no-margin">
-                    <input type="checkbox" title="select" value="">
+                    <input
+                            type="checkbox"
+                            title="select"
+                            value=""
+                            data-ic-action="
+                                trigger:'cp:refreshSelectionButtons',['.entries .entry-checkbox','#select-all-button','#select-none-button']
+                            "
+                            class="entry-checkbox">
                     <label>
                         <a class=""
                            href="{% url 'files:ls' entry.relative_path %}">
