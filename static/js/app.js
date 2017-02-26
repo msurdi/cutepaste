@@ -15,8 +15,7 @@ $(document).on("cp:displayIfMatches", displayIfMatches);
 function displayIfMatches(event, matchSelector, showSelector, hideSelector) {
     let matchElements = $(matchSelector);
     let showElements = $(showSelector);
-    let hideElements = $(hideSelector)
-
+    let hideElements = $(hideSelector);
     let matches = matchElements.length > 0;
     if (matches) {
         showElements.show();
