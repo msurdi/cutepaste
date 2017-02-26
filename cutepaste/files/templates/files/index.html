@@ -1,43 +1,59 @@
 {% extends "__layout.html" %}
 {% block content %}
     <div class="btn-group padding-5">
-        <button id="select-all-button"
-                type="button"
-                class="btn btn-default hide-if-checked"
-                data-ic-action="
+        <label id="select-all-button"
+               class="btn btn-default hide-if-checked"
+               data-ic-action="
                     trigger:'cp:selectAll','.entries .entry-checkbox';
                     delay:0;
                     trigger:'cp:displayIfMatches',['.entries input:checked','.show-if-checked', '.hide-if-checked']
                 ">
             <span class="glyphicon glyphicon-check"></span>
-        </button>
-        <button id="select-none-button"
-                type="button"
-                class="btn btn-default default-hidden show-if-checked"
-                data-ic-action="
+        </label>
+        <label id="select-none-button"
+               class="btn btn-default default-hidden show-if-checked"
+               data-ic-action="
                     trigger:'cp:selectNone','.entries .entry-checkbox';
                     delay:0;
                     trigger:'cp:displayIfMatches',['.entries input:checked','.show-if-checked', '.hide-if-checked']
                 ">
             <span class="glyphicon glyphicon-unchecked"></span>
-        </button>
+        </label>
 
-        <button type="button" class="btn btn-default default-hidden show-if-checked">
+        <label
+                data-ic-post-to="{% url "files:cut" %}"
+                data-ic-target="#clipboard-button"
+                data-ic-replace-target="true"
+                data-ic-include=".entries input"
+                class="btn btn-default default-hidden show-if-checked">
             <span class="glyphicon glyphicon-scissors"></span>
-        </button>
-        <button type="button" class="btn btn-default default-hidden show-if-checked">
+        </label>
+        <label data-ic-post-to="{% url "files:copy" %}"
+               data-ic-target="#clipboard-button"
+               data-ic-replace-target="true"
+               data-ic-include=".entries input"
+               class="btn btn-default default-hidden show-if-checked">
             <span class="glyphicon glyphicon-copy"></span>
-        </button>
-        <button type="button" class="btn btn-default">
+        </label>
+        <label data-ic-post-to="{% url "files:paste" current_path %}"
+               data-ic-target=".page"
+               data-ic-select-from-response=".page"
+               class="btn btn-default">
             <span class="glyphicon glyphicon-paste"></span>
-        </button>
-        <button type="button" class="btn btn-default default-hidden show-if-checked">
+        </label>
+        <label class="btn btn-default default-hidden show-if-checked">
             <span class="glyphicon glyphicon-edit"></span>
-        </button>
-        <button type="button" class="btn btn-default default-hidden show-if-checked">
+        </label>
+        <label data-ic-post-to="{% url "files:trash" current_path %}"
+               data-ic-target=".page"
+               data-ic-select-from-response=".page"
+               data-ic-include=".entries input"
+               class="btn btn-default default-hidden show-if-checked">
             <span class="glyphicon glyphicon-trash"></span>
-        </button>
+        </label>
+        {% include "files/_clipboard_button.html" with clipboard_files_count=clipboard_files_count %}
     </div>
+
     <div class="list-group entries">
         {% if parent_path %}
             <a class="list-group-item"
@@ -52,7 +68,8 @@
                     <input
                             type="checkbox"
                             title="select"
-                            value=""
+                            name="selected"
+                            value="{{ entry.relative_path }}"
                             data-ic-action="
                                 trigger:'cp:displayIfMatches',['.entries input:checked','.show-if-checked', '.hide-if-checked']
                             "
