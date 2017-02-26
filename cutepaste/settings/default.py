@@ -18,6 +18,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.middleware.common.CommonMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "cutepaste.middleware.ExceptionMapperMiddleware",
@@ -46,7 +47,7 @@ WSGI_APPLICATION = "cutepaste.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": "/data/db.sqlite3",
+        "NAME": "/data/cutepaste.sqlite3",
     }
 }
 
@@ -65,8 +66,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Internationalization
-# https://docs.djangoproject.com/en/1.9/topics/i18n/
+SESSION_ENGINE="django.contrib.sessions.backends.file"
 
 LANGUAGE_CODE = "en-us"
 
