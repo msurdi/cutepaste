@@ -27,6 +27,24 @@ function refreshSelectionButtons(event, checkboxesSelector, allButtonSelector, n
     }
 }
 
+$(document).on("cp:displayIfMatches", displayIfMatches);
+function displayIfMatches(event, matchSelector, showSelector, hideSelector) {
+    let matchElements = $(matchSelector);
+    let showElements = $(showSelector);
+    let hideElements = $(hideSelector)
+
+    let matches = matchElements.length > 0;
+    console.log(matches);
+    if (matches) {
+        showElements.show();
+        hideElements.hide();
+    } else {
+        showElements.hide();
+        hideElements.show();
+    }
+}
+
+
 $(document).on("cp:selectAll", selectAll);
 
 function selectAll(event, checkboxesSelector) {

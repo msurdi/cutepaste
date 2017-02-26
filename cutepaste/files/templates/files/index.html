@@ -3,38 +3,38 @@
     <div class="btn-group padding-5">
         <button id="select-all-button"
                 type="button"
-                class="btn btn-default"
+                class="btn btn-default hide-if-checked"
                 data-ic-action="
                     trigger:'cp:selectAll','.entries .entry-checkbox';
                     delay:0;
-                    trigger:'cp:refreshSelectionButtons',['.entries .entry-checkbox','#select-all-button','#select-none-button']
+                    trigger:'cp:displayIfMatches',['.entries input:checked','.show-if-checked', '.hide-if-checked']
                 ">
             <span class="glyphicon glyphicon-check"></span>
         </button>
         <button id="select-none-button"
                 type="button"
-                class="btn btn-default no-display"
+                class="btn btn-default default-hidden show-if-checked"
                 data-ic-action="
                     trigger:'cp:selectNone','.entries .entry-checkbox';
                     delay:0;
-                    trigger:'cp:refreshSelectionButtons',['.entries .entry-checkbox','#select-all-button','#select-none-button']
+                    trigger:'cp:displayIfMatches',['.entries input:checked','.show-if-checked', '.hide-if-checked']
                 ">
             <span class="glyphicon glyphicon-unchecked"></span>
         </button>
 
-        <button type="button" class="btn btn-default">
+        <button type="button" class="btn btn-default default-hidden show-if-checked">
             <span class="glyphicon glyphicon-scissors"></span>
         </button>
-        <button type="button" class="btn btn-default">
+        <button type="button" class="btn btn-default default-hidden show-if-checked">
             <span class="glyphicon glyphicon-copy"></span>
         </button>
         <button type="button" class="btn btn-default">
             <span class="glyphicon glyphicon-paste"></span>
         </button>
-        <button type="button" class="btn btn-default">
+        <button type="button" class="btn btn-default default-hidden show-if-checked">
             <span class="glyphicon glyphicon-edit"></span>
         </button>
-        <button type="button" class="btn btn-default">
+        <button type="button" class="btn btn-default default-hidden show-if-checked">
             <span class="glyphicon glyphicon-trash"></span>
         </button>
     </div>
@@ -54,7 +54,7 @@
                             title="select"
                             value=""
                             data-ic-action="
-                                trigger:'cp:refreshSelectionButtons',['.entries .entry-checkbox','#select-all-button','#select-none-button']
+                                trigger:'cp:displayIfMatches',['.entries input:checked','.show-if-checked', '.hide-if-checked']
                             "
                             class="entry-checkbox">
                     <label>
