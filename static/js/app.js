@@ -18,7 +18,6 @@ function displayIfMatches(event, matchSelector, showSelector, hideSelector) {
     let hideElements = $(hideSelector)
 
     let matches = matchElements.length > 0;
-    console.log(matches);
     if (matches) {
         showElements.show();
         hideElements.hide();
