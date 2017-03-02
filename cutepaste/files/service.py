@@ -1,12 +1,14 @@
 import os
 import shutil
+import locale
 from os import path
 from typing import Callable, List
-
+from PyICU import Collator, Locale
 from django.conf import settings
 
 from cutepaste.files.models import FSEntry
 
+_collator = Collator.createInstance(Locale(locale.getdefaultlocale()[0]))
 
 def _relative_path(file_path: str) -> str:
     while file_path.startswith("/"):
@@ -24,7 +26,7 @@ def ls(files_path: str) -> List[FSEntry]:
             file_relative_path = path.join(relative_files_path, filename)
             file_absolute_path = path.join(root_absolute_path, filename)
             entries.append(FSEntry(file_absolute_path, file_relative_path))
-    return sorted(entries, key=lambda e: e.name)
+    return sorted(entries, key=lambda e: _collator.getSortKey(e.name))
 
 
 def _perfom_fs_operation(operation: Callable[[str, str], str], source_files: List[str], destination_path: str) -> None:

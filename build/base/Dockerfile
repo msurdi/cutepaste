@@ -1,7 +1,7 @@
 FROM python:3.6-alpine
 
 # Install required system packages
-RUN apk --update add ca-certificates nodejs gcc musl-dev linux-headers bash mailcap
+RUN apk --update add ca-certificates nodejs gcc g++ musl-dev linux-headers bash mailcap icu-dev
 
 # Upgrade base image pip
 RUN pip install pip==9.0.1
