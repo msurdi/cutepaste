@@ -20,9 +20,10 @@ def ls(files_path: str) -> List[FSEntry]:
     root_absolute_path = os.path.join(root_path, files_path)
     entries = []
     for filename in os.listdir(root_absolute_path):
-        file_relative_path = path.join(relative_files_path, filename)
-        file_absolute_path = path.join(root_absolute_path, filename)
-        entries.append(FSEntry(file_absolute_path, file_relative_path))
+        if settings.CP_SHOW_HIDDEN_FILES or not filename.startswith("."):
+            file_relative_path = path.join(relative_files_path, filename)
+            file_absolute_path = path.join(root_absolute_path, filename)
+            entries.append(FSEntry(file_absolute_path, file_relative_path))
     return sorted(entries, key=lambda e: e.name)
 
 

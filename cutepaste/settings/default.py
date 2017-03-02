@@ -66,7 +66,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-SESSION_ENGINE="django.contrib.sessions.backends.file"
+SESSION_ENGINE = "django.contrib.sessions.backends.file"
 
 LANGUAGE_CODE = "en-us"
 
@@ -111,4 +111,5 @@ SILENCED_SYSTEM_CHECKS = ["urls.W001"]
 
 EXCEPTION_MAPPER_ENABLED = True
 
-CP_ROOT_DIR="/data"
+CP_ROOT_DIR = "/data"
+CP_SHOW_HIDDEN_FILES = False
