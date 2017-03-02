@@ -23,7 +23,7 @@ def ls(files_path: str) -> List[FSEntry]:
         file_relative_path = path.join(relative_files_path, filename)
         file_absolute_path = path.join(root_absolute_path, filename)
         entries.append(FSEntry(file_absolute_path, file_relative_path))
-    return entries
+    return sorted(entries, key=lambda e: e.name)
 
 
 def _perfom_fs_operation(operation: Callable[[str, str], str], source_files: List[str], destination_path: str) -> None:

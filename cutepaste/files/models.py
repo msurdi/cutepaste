@@ -6,14 +6,18 @@ class FSEntry:
         self._absolute_path = absolute_path
         self._relative_path = relative_path
 
+    @property
     def is_file(self) -> bool:
         return path.isfile(self._absolute_path)
 
+    @property
     def is_dir(self) -> bool:
         return path.isdir(self._absolute_path)
 
+    @property
     def name(self) -> str:
         return path.basename(self._absolute_path)
 
+    @property
     def relative_path(self) -> str:
         return self._relative_path
