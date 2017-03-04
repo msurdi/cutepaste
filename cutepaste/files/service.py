@@ -10,6 +10,7 @@ from cutepaste.files.models import FSEntry
 
 _collator = Collator.createInstance(Locale(locale.getdefaultlocale()[0]))
 
+
 def _relative_path(file_path: str) -> str:
     while file_path.startswith("/"):
         file_path = file_path[1:]

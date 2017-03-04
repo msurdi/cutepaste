@@ -41,10 +41,11 @@
                class="btn btn-default">
             <span class="glyphicon glyphicon-paste"></span>
         </label>
-        <label class="btn btn-default default-hidden show-if-checked">
+        <a href="{% url "files:edit" current_path %}"
+           class="btn btn-default">
             <span class="glyphicon glyphicon-edit"></span>
-        </label>
-        <label data-ic-post-to="{% url "files:trash" current_path %}"
+        </a>
+        <label data-ic-get-from="{% url "files:trash" current_path %}"
                data-ic-target=".page"
                data-ic-select-from-response=".page"
                data-ic-include=".entries input"

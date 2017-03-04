@@ -2,7 +2,9 @@ from os import path
 
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.urls import reverse
 
+from cutepaste.util import TurbolinksResponseRedirect
 from . import service
 
 _CLIPBOARD = "clipboard"
@@ -32,7 +34,7 @@ def clipboard(request, operation: str) -> HttpResponse:
     })
 
 
-def paste(request, files_path: str) -> HttpResponse:
+def paste(request, files_path: str = "") -> HttpResponse:
     if request.POST:
         if request.session[_OPERATION] == "cut":
             service.move(request.session.get(_CLIPBOARD, []), files_path)
@@ -41,7 +43,17 @@ def paste(request, files_path: str) -> HttpResponse:
     return ls(request, files_path)
 
 
-def trash(request, files_path: str) -> HttpResponse:
+def trash(request, files_path: str = "") -> HttpResponse:
     if request.POST:
         service.remove(request.POST.getlist("selected", []))
     return ls(request, files_path)
+
+
+def edit(request, files_path: str = "") -> HttpResponse:
+    if request.POST:
+        redirect_url = reverse("files:ls", args=[files_path])
+        return TurbolinksResponseRedirect(redirect_url)
+    return render(request, "files/edit.html", {
+        "entries": service.ls(files_path),
+        "current_path": files_path,
+    })
