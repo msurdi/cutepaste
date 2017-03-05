@@ -54,9 +54,10 @@ def edit(request, files_path: str = "") -> HttpResponse:
     files = service.ls(files_path)
     edit_form = FilesEditForm(request.POST or None, files=files)
     if edit_form.is_valid():
-        for current_name, new_name in edit_form.cleaned_data.items():
-            if new_name != current_name:
-                service.rename(path.join(files_path, current_name), path.join(files_path, new_name))
+        for relative_path, new_name in edit_form.cleaned_data.items():
+            new_relative_path = path.join(files_path, new_name)
+            if new_name != new_relative_path:
+                service.rename(relative_path, new_relative_path)
         redirect_url = reverse("files:ls", args=[files_path])
         return TurbolinksResponseRedirect(redirect_url)
     return render(request, "files/edit.html", {
