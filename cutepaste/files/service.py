@@ -17,6 +17,11 @@ def _relative_path(file_path: str) -> str:
     return file_path
 
 
+def _absolute_path(file_path: str) -> str:
+    root_path = getattr(settings, "CP_ROOT_DIRS", "/data")
+    return path.join(root_path, _relative_path(file_path))
+
+
 def ls(files_path: str) -> List[FSEntry]:
     root_path = getattr(settings, "CP_ROOT_DIRS", "/data")
     relative_files_path = _relative_path(files_path)
@@ -41,6 +46,12 @@ def _perfom_fs_operation(operation: Callable[[str, str], str], source_files: Lis
 
 def move(source_files: List[str], destination_path: str) -> None:
     _perfom_fs_operation(shutil.move, source_files, destination_path)
+
+
+def rename(source_file: str, destination_file: str) -> None:
+    absolute_source_path = _absolute_path(source_file)
+    absolute_destination_path = _absolute_path(destination_file)
+    shutil.move(absolute_source_path, absolute_destination_path)
 
 
 def copy(source_files: List[str], destination_path: str) -> None:

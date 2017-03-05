@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
 
+from cutepaste.files.forms import FilesEditForm
 from cutepaste.util import TurbolinksResponseRedirect
 from . import service
 
@@ -50,10 +51,15 @@ def trash(request, files_path: str = "") -> HttpResponse:
 
 
 def edit(request, files_path: str = "") -> HttpResponse:
-    if request.POST:
+    files = service.ls(files_path)
+    edit_form = FilesEditForm(request.POST or None, files=files)
+    if edit_form.is_valid():
+        for current_name, new_name in edit_form.cleaned_data.items():
+            if new_name != current_name:
+                service.rename(path.join(files_path, current_name), path.join(files_path, new_name))
         redirect_url = reverse("files:ls", args=[files_path])
         return TurbolinksResponseRedirect(redirect_url)
     return render(request, "files/edit.html", {
-        "entries": service.ls(files_path),
         "current_path": files_path,
+        "edit_form": edit_form,
     })
