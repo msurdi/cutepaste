@@ -35,6 +35,11 @@ def ls(files_path: str) -> List[FSEntry]:
     return sorted(entries, key=lambda e: _collator.getSortKey(e.name))
 
 
+def stat(file_path) -> FSEntry:
+    absolute_path = _absolute_path(file_path)
+    return FSEntry(absolute_path, file_path)
+
+
 def _perfom_fs_operation(operation: Callable[[str, str], str], source_files: List[str], destination_path: str) -> None:
     root_path = getattr(settings, "CP_ROOT_DIRS", "/data")
     relative_destination_path = _relative_path(destination_path)

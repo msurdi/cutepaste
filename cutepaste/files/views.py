@@ -13,6 +13,12 @@ _OPERATION = "operation"
 
 
 def ls(request, files_path: str = "") -> HttpResponse:
+    entry = service.stat(files_path)
+    if entry.is_file:
+        response = HttpResponse()
+        response["X-Sendfile"] = entry.absolute_path
+        return response
+
     parent_path = ""
     if files_path:
         parent_path = path.join(files_path, "..")

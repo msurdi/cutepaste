@@ -3,21 +3,17 @@ from os import path
 
 class FSEntry:
     def __init__(self, absolute_path: str, relative_path: str) -> None:
-        self._absolute_path = absolute_path
-        self._relative_path = relative_path
+        self.absolute_path = absolute_path
+        self.relative_path = relative_path
 
     @property
     def is_file(self) -> bool:
-        return path.isfile(self._absolute_path)
+        return path.isfile(self.absolute_path)
 
     @property
     def is_dir(self) -> bool:
-        return path.isdir(self._absolute_path)
+        return path.isdir(self.absolute_path)
 
     @property
     def name(self) -> str:
-        return path.basename(self._absolute_path)
-
-    @property
-    def relative_path(self) -> str:
-        return self._relative_path
+        return path.basename(self.absolute_path)
