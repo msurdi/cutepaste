@@ -17,6 +17,7 @@ def ls(request, files_path: str = "") -> HttpResponse:
     if entry.is_file:
         response = HttpResponse()
         response["X-Sendfile"] = entry.absolute_path
+        response["Content-Disposition"] = "inline"
         return response
 
     parent_path = ""
