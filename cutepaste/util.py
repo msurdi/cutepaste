@@ -20,7 +20,6 @@ def ajax_only(view):
     return _wrapped_view
 
 
-class TurbolinksResponseRedirect(HttpResponse):
-    def __init__(self, url: str) -> None:
-        super().__init__(status=200)
-        self["X-IC-Script"] = f"Turbolinks.visit('{url}');"
+def ic_redirect(response:HttpResponse, url:str) -> HttpResponse:
+    response["X-IC-PushURL"] = url
+    return response

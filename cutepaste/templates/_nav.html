@@ -7,8 +7,14 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
+
+            {% url "files:ls" "" as index_url%}
             <a class="navbar-brand"
-               href="{% url "files:ls" "" %}">
+               href="{{ index_url }}"
+               data-ic-get-from="{{ index_url }}"
+               data-ic-select-from-response=".page"
+               data-ic-target=".page"
+               data-ic-push-url="true">
                 Cutepaste
             </a>
         </div>

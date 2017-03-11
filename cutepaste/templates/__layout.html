@@ -8,7 +8,6 @@
         <meta content="IE=edge" http-equiv="X-UA-Compatible">
         <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
         <meta content="true" name="intercoolerjs:use-data-prefix"/>
-        <meta name="turbolinks-cache-control" content="no-cache">
 
         <link href="{% static 'images/favicon.ico' %}" rel="shortcut icon" type="image/png"/>
 
@@ -26,7 +25,6 @@
             <script charset="utf-8" src="/static/jquery/jquery.js" type="text/javascript"></script>
             <script charset="utf-8" src="/static/bootstrap/js/bootstrap.js" type="text/javascript"></script>
             <script charset="utf-8" src="/static/intercooler/intercooler.js" type="text/javascript"></script>
-            <script charset="utf-8" src="/static/turbolinks/turbolinks.js" type="text/javascript"></script>
         {% endcompress %}
         {% compress js %}
             <script charset="utf-8" src="/static/js/app.js" type="text/es6"></script>
@@ -36,7 +34,7 @@
     <div class="scroller full-height" data-ic-history-elt="true">
 {% endif %}
 
-<div class="page full-height">
+<div class="page full-height" data-ic-history-elt="true">
     <input data-ic-global-include="#csrftoken"
            id="csrftoken"
            name="csrfmiddlewaretoken"

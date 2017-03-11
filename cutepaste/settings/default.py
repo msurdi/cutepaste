@@ -88,7 +88,6 @@ STATICFILES_DIRS = [
     ("font-awesome/fonts", os.path.join(BASE_DIR, "../node_modules/font-awesome/fonts")),
     ("bootstrap", os.path.join(BASE_DIR, "../node_modules/bootstrap/dist")),
     ("theter", os.path.join(BASE_DIR, "../node_modules/tether/dist")),
-    ("turbolinks", os.path.join(BASE_DIR, "../node_modules/turbolinks/dist")),
 ]
 
 STATICFILES_FINDERS = (

@@ -1,12 +1,3 @@
-Turbolinks.start();
-
-document.addEventListener("turbolinks:load", () => {
-    processIntercoolerTags();
-    restoreCaretPosition();
-});
-
-document.addEventListener("turbolinks:click", saveCaretPosition);
-
 $(document).ajaxStart(saveCaretPosition);
 
 $(document).ajaxComplete(restoreCaretPosition);
@@ -38,12 +29,6 @@ $(document).on("cp:selectNone", selectNone);
 
 function selectNone(event, checkboxesSelector) {
     $(checkboxesSelector).prop("checked", false);
-}
-
-function processIntercoolerTags() {
-    if (event.data.timing.visitStart) { // This is to skip initial page load event
-        Intercooler.processNodes(document.body);
-    }
 }
 
 let focused = null;

@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from cutepaste.files.forms import FilesEditForm
-from cutepaste.util import TurbolinksResponseRedirect
+from cutepaste.util import ic_redirect
 from . import service
 
 _CLIPBOARD = "clipboard"
@@ -65,7 +65,7 @@ def edit(request, files_path: str = "") -> HttpResponse:
             if new_name != new_relative_path:
                 service.rename(relative_path, new_relative_path)
         redirect_url = reverse("files:ls", args=[files_path])
-        return TurbolinksResponseRedirect(redirect_url)
+        return ic_redirect(ls(request, files_path), redirect_url)
     return render(request, "files/edit.html", {
         "current_path": files_path,
         "edit_form": edit_form,

@@ -41,7 +41,12 @@
                class="btn btn-default">
             <span class="glyphicon glyphicon-paste"></span>
         </label>
-        <a href="{% url "files:edit" current_path %}"
+        {% url "files:edit" current_path as edit_url %}
+        <a href="{{ edit_url }}"
+           data-ic-get-from="{{ edit_url }}"
+           data-ic-target=".page"
+           data-ic-select-from-response=".page"
+           data-ic-push-url="true"
            class="btn btn-default">
             <span class="glyphicon glyphicon-edit"></span>
         </a>
@@ -57,8 +62,13 @@
 
     <div class="list-group entries">
         {% if parent_path %}
+            {% url 'files:ls' parent_path as parent_url %}
             <a class="list-group-item"
-               href="{% url 'files:ls' parent_path %}">
+               href="{{ parent_url }}"
+               data-ic-target=".page"
+               data-ic-select-from-response=".page"
+               data-ic-push-url="true"
+               data-ic-get-from="{{ parent_url }}">
                 ../
             </a>
         {% endif %}
@@ -76,8 +86,16 @@
                             "
                             class="entry-checkbox">
                     <label>
+                        {% url 'files:ls' entry.relative_path as entry_url %}
                         <a class=""
-                           href="{% url 'files:ls' entry.relative_path %}">
+                                {% if entry.is_dir %}
+                           data-ic-target=".page"
+                           data-ic-select-from-response=".page"
+                           data-ic-push-url="true"
+                           data-ic-get-from="{{ entry_url }}"
+                                {% endif %}
+                           href="{{ entry_url }}"
+                        >
                             {{ entry.name }}{% if entry.is_dir %}/{% endif %}
                         </a>
                     </label>
