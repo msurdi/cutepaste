@@ -2,6 +2,7 @@
 {% block content %}
     <div class="btn-group padding-5">
         <label id="select-all-button"
+               title="Select all"
                class="btn btn-default hide-if-checked"
                data-ic-action="
                     trigger:'cp:selectAll','.entries .entry-checkbox';
@@ -11,6 +12,7 @@
             <span class="glyphicon glyphicon-check"></span>
         </label>
         <label id="select-none-button"
+               title="Unselect all"
                class="btn btn-default default-hidden show-if-checked"
                data-ic-action="
                     trigger:'cp:selectNone','.entries .entry-checkbox';
@@ -20,37 +22,40 @@
             <span class="glyphicon glyphicon-unchecked"></span>
         </label>
 
-        <label
-                data-ic-post-to="{% url "files:cut" %}"
-                data-ic-target="#clipboard-button"
-                data-ic-replace-target="true"
-                data-ic-include=".entries input"
-                class="btn btn-default default-hidden show-if-checked">
+        <label title="Cut selected"
+               data-ic-post-to="{% url "files:cut" %}"
+               data-ic-target="#clipboard-button"
+               data-ic-replace-target="true"
+               data-ic-include=".entries input"
+               class="btn btn-default default-hidden show-if-checked">
             <span class="glyphicon glyphicon-scissors"></span>
         </label>
-        <label data-ic-post-to="{% url "files:copy" %}"
+        <label title="Copy selected"
+               data-ic-post-to="{% url "files:copy" %}"
                data-ic-target="#clipboard-button"
                data-ic-replace-target="true"
                data-ic-include=".entries input"
                class="btn btn-default default-hidden show-if-checked">
             <span class="glyphicon glyphicon-copy"></span>
         </label>
-        <label data-ic-post-to="{% url "files:paste" current_path %}"
+        <label title="Paste from clipboard"
+               data-ic-post-to="{% url "files:paste" current_path %}"
                data-ic-target=".page"
                data-ic-select-from-response=".page"
                class="btn btn-default">
             <span class="glyphicon glyphicon-paste"></span>
         </label>
         {% url "files:edit" current_path as edit_url %}
-        <a href="{{ edit_url }}"
-           data-ic-get-from="{{ edit_url }}"
-           data-ic-target=".page"
-           data-ic-select-from-response=".page"
-           data-ic-push-url="true"
-           class="btn btn-default">
+        <label title="Edit"
+               data-ic-get-from="{{ edit_url }}"
+               data-ic-target=".page"
+               data-ic-select-from-response=".page"
+               data-ic-push-url="true"
+               class="btn btn-default">
             <span class="glyphicon glyphicon-edit"></span>
-        </a>
-        <label data-ic-get-from="{% url "files:trash" current_path %}"
+        </label>
+        <label label="Delete selected"
+               data-ic-get-from="{% url "files:trash" current_path %}"
                data-ic-target=".page"
                data-ic-select-from-response=".page"
                data-ic-include=".entries input"
