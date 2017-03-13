@@ -55,7 +55,7 @@
             <span class="glyphicon glyphicon-edit"></span>
         </label>
         <label label="Delete selected"
-               data-ic-get-from="{% url "files:trash" current_path %}"
+               data-ic-post-to="{% url "files:trash" current_path %}"
                data-ic-target=".page"
                data-ic-select-from-response=".page"
                data-ic-include=".entries input"
