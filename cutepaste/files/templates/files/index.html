@@ -62,7 +62,7 @@
                class="btn btn-default default-hidden show-if-checked">
             <span class="glyphicon glyphicon-trash"></span>
         </label>
-        {% include "files/_clipboard_button.html" with clipboard_files_count=clipboard_files_count %}
+        {{ clipboard_button }}
     </div>
 
     <div class="list-group entries">

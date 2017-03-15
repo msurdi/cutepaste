@@ -2,6 +2,7 @@ from os import path
 
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.template.loader import render_to_string
 from django.urls import reverse
 
 from cutepaste.files.forms import FilesEditForm
@@ -27,7 +28,7 @@ def ls(request, files_path: str = "") -> HttpResponse:
         "entries": service.ls(files_path),
         "current_path": files_path,
         "parent_path": parent_path,
-        "clipboard_files_count": len(request.session.get(_CLIPBOARD, [])),
+        "clipboard_button": _render_clipboard_button(request),
     })
 
 
@@ -35,9 +36,12 @@ def clipboard(request, operation: str) -> HttpResponse:
     if request.POST:
         request.session[_CLIPBOARD] = request.POST.getlist("selected", [])
         request.session[_OPERATION] = operation
+    return HttpResponse(_render_clipboard_button(request))
 
-    return render(request, "files/_clipboard_button.html", {
-        "clipboard_files_count": len(request.session[_CLIPBOARD]),
+
+def _render_clipboard_button(request) -> str:
+    return render_to_string("files/_clipboard_button.html", request=request, context={
+        "clipboard_has_files": len(request.session[_CLIPBOARD]) > 0,
     })
 
 
