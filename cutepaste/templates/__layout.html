@@ -43,9 +43,11 @@
     {% block content %}
     {% endblock %}
 </div>
-
 {% if not request.is_ajax %}
-
+    {# Preload font awesome woff files#}
+    <div style="width:0px;height:0px;overflow:hidden;">
+        <i class="fa fa-square-o fa-3x"></i>
+    </div>
     </div>
     </body>
     </html>
