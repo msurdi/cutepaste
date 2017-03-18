@@ -51,6 +51,7 @@ def paste(request, files_path: str = "") -> HttpResponse:
             service.move(request.session.get(_CLIPBOARD, []), files_path)
         if request.session[_OPERATION] == "copy":
             service.copy(request.session.get(_CLIPBOARD, []), files_path)
+        request.session[_CLIPBOARD] = []
     return ls(request, files_path)
 
 
