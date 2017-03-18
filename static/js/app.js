@@ -13,9 +13,9 @@ function setupCsrfHeader(event, ajaxSetup) {
 }
 
 function selectionChange(event) {
-    let hideElements = $("[data-on-selection=hide]");
-    let showElements = $("[data-on-selection=show]");
-    let anySelected = $("[data-check]:checked").length > 0;
+    let hideElements = $(".on-selection-hide");
+    let showElements = $(".on-selection-show");
+    let anySelected = $(".data-check:checked").length > 0;
     if (anySelected) {
         hideElements.hide();
         showElements.show();
@@ -26,14 +26,14 @@ function selectionChange(event) {
 }
 
 function selectAll(event) {
-    let checkElements = $("[data-check]");
+    let checkElements = $(".data-check");
     checkElements.prop("checked", true);
     $(document).trigger("selectionChange.cp");
 }
 
 
 function unselectAll(event) {
-    let checkElements = $("[data-check]");
+    let checkElements = $(".data-check");
     checkElements.prop("checked", false);
     $(document).trigger("selectionChange.cp");
 }

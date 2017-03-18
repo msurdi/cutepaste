@@ -3,15 +3,13 @@
     <div class="btn-group btn-group-lg padding-5">
         <button id="select-all-button"
                title="Select all"
-               class="btn btn-default"
-               data-on-selection="hide"
+               class="btn btn-default on-selection-hide"
                data-ic-action="trigger:'selectAll.cp'">
             <span class="glyphicon glyphicon-check"></span>
         </button>
         <button id="select-none-button"
                title="Unselect all"
-               class="btn btn-default default-hidden"
-               data-on-selection="show"
+               class="btn btn-default default-hidden on-selection-show"
                data-ic-action="trigger:'unselectAll.cp'">
             <span class="glyphicon glyphicon-unchecked"></span>
         </button>
@@ -21,8 +19,7 @@
                data-ic-target="#clipboard-button"
                data-ic-replace-target="true"
                data-ic-include=".entries input"
-               data-on-selection="show"
-               class="btn btn-default default-hidden">
+               class="btn btn-default default-hidden on-selection-show">
             <span class="glyphicon glyphicon-scissors"></span>
         </button>
         <button title="Copy selected"
@@ -30,8 +27,7 @@
                data-ic-target="#clipboard-button"
                data-ic-replace-target="true"
                data-ic-include=".entries input"
-               data-on-selection="show"
-               class="btn btn-default default-hidden">
+               class="btn btn-default default-hidden on-selection-show">
             <span class="glyphicon glyphicon-copy"></span>
         </button>
         <button title="Paste from clipboard"
@@ -55,8 +51,7 @@
                data-ic-target=".page"
                data-ic-select-from-response=".page"
                data-ic-include=".entries input"
-               data-on-selection="show"
-               class="btn btn-default default-hidden">
+               class="btn btn-default default-hidden on-selection-show">
             <span class="glyphicon glyphicon-trash"></span>
         </button>
         {{ clipboard_button }}
@@ -84,7 +79,7 @@
                             name="selected"
                             value="{{ entry.relative_path }}"
                             data-ic-action="trigger:'selectionChange.cp'"
-                            data-check>
+                            class="data-check">
                     <label>
                         {% url 'files:ls' entry.relative_path as entry_url %}
                         <a class=""
