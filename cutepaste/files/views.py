@@ -41,7 +41,7 @@ def clipboard(request, operation: str) -> HttpResponse:
 
 def _render_clipboard_button(request) -> str:
     return render_to_string("files/_clipboard_button.html", request=request, context={
-        "clipboard_has_files": len(request.session[_CLIPBOARD]) > 0,
+        "clipboard_has_files": len(request.session.get(_CLIPBOARD, [])) > 0,
     })
 
 
