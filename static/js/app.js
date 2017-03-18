@@ -1,10 +1,9 @@
 $(document).ajaxStart(saveCaretPosition);
 $(document).ajaxComplete(restoreCaretPosition);
 $(document).on("beforeAjaxSend.ic", setupCsrfHeader);
-$(document).on("cp.selectionChange", selectionChange);
-$(document).on("cp.selectAll", selectAll);
-$(document).on("cp.unselectAll", unselectAll);
-
+$(document).on("selectionChange.cp", selectionChange);
+$(document).on("selectAll.cp", selectAll);
+$(document).on("unselectAll.cp", unselectAll);
 
 function setupCsrfHeader(event, ajaxSetup) {
     let csrftoken = $("#csrftoken").val();
@@ -29,14 +28,14 @@ function selectionChange(event) {
 function selectAll(event) {
     let checkElements = $("[data-check]");
     checkElements.prop("checked", true);
-    $(document).trigger("cp.selectionChange");
+    $(document).trigger("selectionChange.cp");
 }
 
 
 function unselectAll(event) {
     let checkElements = $("[data-check]");
     checkElements.prop("checked", false);
-    $(document).trigger("cp.selectionChange");
+    $(document).trigger("selectionChange.cp");
 }
 
 let focused = null;

@@ -5,14 +5,14 @@
                title="Select all"
                class="btn btn-default"
                data-on-selection="hide"
-               data-ic-action="trigger:cp.selectAll">
+               data-ic-action="trigger:'selectAll.cp'">
             <span class="glyphicon glyphicon-check"></span>
         </label>
         <label id="select-none-button"
                title="Unselect all"
                class="btn btn-default default-hidden"
                data-on-selection="show"
-               data-ic-action="trigger:cp.unselectAll">
+               data-ic-action="trigger:'unselectAll.cp'">
             <span class="glyphicon glyphicon-unchecked"></span>
         </label>
 
@@ -83,7 +83,7 @@
                             title="select"
                             name="selected"
                             value="{{ entry.relative_path }}"
-                            data-ic-action="trigger:cp.selectionChange"
+                            data-ic-action="trigger:'selectionChange.cp'"
                             data-check>
                     <label>
                         {% url 'files:ls' entry.relative_path as entry_url %}
