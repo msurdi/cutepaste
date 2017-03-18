@@ -1,9 +1,9 @@
 $(document).ajaxStart(saveCaretPosition);
 $(document).ajaxComplete(restoreCaretPosition);
-$(document).on("cp:displayIfMatches", displayIfMatches);
-$(document).on("cp:selectAll", selectAll);
-$(document).on("cp:selectNone", selectNone);
 $(document).on("beforeAjaxSend.ic", setupCsrfHeader);
+$(document).on("cp.selectionChange", selectionChange);
+$(document).on("cp.selectAll", selectAll);
+$(document).on("cp.unselectAll", unselectAll);
 
 
 function setupCsrfHeader(event, ajaxSetup) {
@@ -13,28 +13,30 @@ function setupCsrfHeader(event, ajaxSetup) {
     }
 }
 
-function displayIfMatches(event, matchSelector, showSelector, hideSelector) {
-    let matchElements = $(matchSelector);
-    let showElements = $(showSelector);
-    let hideElements = $(hideSelector);
-    let matches = matchElements.length > 0;
-    if (matches) {
-        showElements.show();
+function selectionChange(event) {
+    let hideElements = $("[data-on-selection=hide]");
+    let showElements = $("[data-on-selection=show]");
+    let anySelected = $("[data-check]:checked").length > 0;
+    if (anySelected) {
         hideElements.hide();
+        showElements.show();
     } else {
-        showElements.hide();
         hideElements.show();
+        showElements.hide();
     }
 }
 
-
-function selectAll(event, checkboxesSelector) {
-    $(checkboxesSelector).prop("checked", true);
+function selectAll(event) {
+    let checkElements = $("[data-check]");
+    checkElements.prop("checked", true);
+    $(document).trigger("cp.selectionChange");
 }
 
 
-function selectNone(event, checkboxesSelector) {
-    $(checkboxesSelector).prop("checked", false);
+function unselectAll(event) {
+    let checkElements = $("[data-check]");
+    checkElements.prop("checked", false);
+    $(document).trigger("cp.selectionChange");
 }
 
 let focused = null;

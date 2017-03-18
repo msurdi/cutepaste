@@ -3,22 +3,16 @@
     <div class="btn-group btn-group-lg padding-5">
         <label id="select-all-button"
                title="Select all"
-               class="btn btn-default hide-if-checked"
-               data-ic-action="
-                    trigger:'cp:selectAll','.entries .entry-checkbox';
-                    delay:0;
-                    trigger:'cp:displayIfMatches',['.entries input:checked','.show-if-checked', '.hide-if-checked']
-                ">
+               class="btn btn-default"
+               data-on-selection="hide"
+               data-ic-action="trigger:cp.selectAll">
             <span class="glyphicon glyphicon-check"></span>
         </label>
         <label id="select-none-button"
                title="Unselect all"
-               class="btn btn-default default-hidden show-if-checked"
-               data-ic-action="
-                    trigger:'cp:selectNone','.entries .entry-checkbox';
-                    delay:0;
-                    trigger:'cp:displayIfMatches',['.entries input:checked','.show-if-checked', '.hide-if-checked']
-                ">
+               class="btn btn-default default-hidden"
+               data-on-selection="show"
+               data-ic-action="trigger:cp.unselectAll">
             <span class="glyphicon glyphicon-unchecked"></span>
         </label>
 
@@ -27,7 +21,8 @@
                data-ic-target="#clipboard-button"
                data-ic-replace-target="true"
                data-ic-include=".entries input"
-               class="btn btn-default default-hidden show-if-checked">
+               data-on-selection="show"
+               class="btn btn-default default-hidden">
             <span class="glyphicon glyphicon-scissors"></span>
         </label>
         <label title="Copy selected"
@@ -35,7 +30,8 @@
                data-ic-target="#clipboard-button"
                data-ic-replace-target="true"
                data-ic-include=".entries input"
-               class="btn btn-default default-hidden show-if-checked">
+               data-on-selection="show"
+               class="btn btn-default default-hidden">
             <span class="glyphicon glyphicon-copy"></span>
         </label>
         <label title="Paste from clipboard"
@@ -59,7 +55,8 @@
                data-ic-target=".page"
                data-ic-select-from-response=".page"
                data-ic-include=".entries input"
-               class="btn btn-default default-hidden show-if-checked">
+               data-on-selection="show"
+               class="btn btn-default default-hidden">
             <span class="glyphicon glyphicon-trash"></span>
         </label>
         {{ clipboard_button }}
@@ -86,10 +83,8 @@
                             title="select"
                             name="selected"
                             value="{{ entry.relative_path }}"
-                            data-ic-action="
-                                trigger:'cp:displayIfMatches',['.entries input:checked','.show-if-checked', '.hide-if-checked']
-                            "
-                            class="entry-checkbox">
+                            data-ic-action="trigger:cp.selectionChange"
+                            data-check>
                     <label>
                         {% url 'files:ls' entry.relative_path as entry_url %}
                         <a class=""
@@ -99,8 +94,7 @@
                            data-ic-push-url="true"
                            data-ic-get-from="{{ entry_url }}"
                                 {% endif %}
-                           href="{{ entry_url }}"
-                        >
+                           href="{{ entry_url }}">
                             {{ entry.name }}{% if entry.is_dir %}/{% endif %}
                         </a>
                     </label>
