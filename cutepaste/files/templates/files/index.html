@@ -2,56 +2,57 @@
 {% block content %}
     <div class="btn-group btn-group-lg padding-5">
         <button id="select-all-button"
-               title="Select all"
-               class="btn btn-default on-selection-hide"
-               data-ic-action="trigger:'selectAll.cp'">
+                title="Select all"
+                tabindex="-1"
+                class="btn btn-default no-outline on-selection-hide"
+                data-ic-action="publish:'selectAll'">
             <span class="glyphicon glyphicon-check"></span>
         </button>
         <button id="select-none-button"
-               title="Unselect all"
-               class="btn btn-default default-hidden on-selection-show"
-               data-ic-action="trigger:'unselectAll.cp'">
+                title="Unselect all"
+                class="btn btn-default no-outline default-hidden on-selection-show"
+                data-ic-action="publish:'unselectAll'">
             <span class="glyphicon glyphicon-unchecked"></span>
         </button>
 
         <button title="Cut selected"
-               data-ic-post-to="{% url "files:cut" %}"
-               data-ic-target="#clipboard-button"
-               data-ic-replace-target="true"
-               data-ic-include=".entries input"
-               class="btn btn-default default-hidden on-selection-show">
+                data-ic-post-to="{% url "files:cut" %}"
+                data-ic-target="#clipboard-button"
+                data-ic-replace-target="true"
+                data-ic-include=".entries input"
+                class="btn btn-default no-outline default-hidden on-selection-show">
             <span class="glyphicon glyphicon-scissors"></span>
         </button>
         <button title="Copy selected"
-               data-ic-post-to="{% url "files:copy" %}"
-               data-ic-target="#clipboard-button"
-               data-ic-replace-target="true"
-               data-ic-include=".entries input"
-               class="btn btn-default default-hidden on-selection-show">
+                data-ic-post-to="{% url "files:copy" %}"
+                data-ic-target="#clipboard-button"
+                data-ic-replace-target="true"
+                data-ic-include=".entries input"
+                class="btn btn-default no-outline default-hidden on-selection-show">
             <span class="glyphicon glyphicon-copy"></span>
         </button>
         <button title="Paste from clipboard"
-               data-ic-post-to="{% url "files:paste" current_path %}"
-               data-ic-target=".page"
-               data-ic-select-from-response=".page"
-               class="btn btn-default">
+                data-ic-post-to="{% url "files:paste" current_path %}"
+                data-ic-target=".page"
+                data-ic-select-from-response=".page"
+                class="btn btn-default no-outline">
             <span class="glyphicon glyphicon-paste"></span>
         </button>
         {% url "files:edit" current_path as edit_url %}
         <button title="Edit"
-               data-ic-get-from="{{ edit_url }}"
-               data-ic-target=".page"
-               data-ic-select-from-response=".page"
-               data-ic-push-url="true"
-               class="btn btn-default">
+                data-ic-get-from="{{ edit_url }}"
+                data-ic-target=".page"
+                data-ic-select-from-response=".page"
+                data-ic-push-url="true"
+                class="btn btn-default no-outline">
             <span class="glyphicon glyphicon-edit"></span>
         </button>
         <button label="Delete selected"
-               data-ic-post-to="{% url "files:trash" current_path %}"
-               data-ic-target=".page"
-               data-ic-select-from-response=".page"
-               data-ic-include=".entries input"
-               class="btn btn-default default-hidden on-selection-show">
+                data-ic-post-to="{% url "files:trash" current_path %}"
+                data-ic-target=".page"
+                data-ic-select-from-response=".page"
+                data-ic-include=".entries input"
+                class="btn btn-default no-outline default-hidden on-selection-show">
             <span class="glyphicon glyphicon-trash"></span>
         </button>
         {{ clipboard_button }}
@@ -78,7 +79,7 @@
                             title="select"
                             name="selected"
                             value="{{ entry.relative_path }}"
-                            data-ic-action="trigger:'selectionChange.cp'"
+                            data-ic-action="publish:'selectionChange'"
                             class="data-check">
                     <label>
                         {% url 'files:ls' entry.relative_path as entry_url %}

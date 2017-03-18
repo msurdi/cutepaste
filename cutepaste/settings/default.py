@@ -104,8 +104,7 @@ COMPRESS_PRECOMPILERS = (
     ("text/es6", "./node_modules/.bin/babel --source-maps inline {infile}"),
 )
 
-COMPRESS_ENABLED = True
-COMPRESS_CSS_HASHING_METHOD = "content"
+COMPRESS_ENABLED = False
 SILENCED_SYSTEM_CHECKS = ["urls.W001"]
 
 EXCEPTION_MAPPER_ENABLED = True

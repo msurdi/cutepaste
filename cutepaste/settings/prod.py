@@ -4,6 +4,8 @@ from .default import *  # noqa
 
 DEBUG = False
 COMPRESS_OFFLINE = os.environ.get("COMPRESS_OFFLINE", "true") == "true"
+COMPRESS_ENABLED = True
+COMPRESS_CSS_HASHING_METHOD = "content"
 DATABASES["default"]["NAME"] = "/data/cutepaste.db"  # noqa
 STATIC_ROOT = "build/statics"
 
