@@ -44,3 +44,61 @@ def test_move_absolute_dir(mocker):
     service.move(["/file1"], "/some/dir")
 
     assert move_mock.mock_calls == [call("/data/file1", "/data/some/dir/")]
+
+
+def test_rename(mocker):
+    move_mock = mocker.patch("shutil.move")
+    service.rename("file1", "file2")
+
+    assert move_mock.mock_calls == [call("/data/file1", "/data/file2")]
+
+
+def test_rename_absolute(mocker):
+    move_mock = mocker.patch("shutil.move")
+    service.rename("/etc/hosts", "/etc/resolv.conf")
+
+    assert move_mock.mock_calls == [call("/data/etc/hosts", "/data/etc/resolv.conf")]
+
+
+def test_copy(mocker):
+    copy_mock = mocker.patch("shutil.copy")
+    service.copy(["file1", "file2"], "/some/dir")
+
+    assert copy_mock.mock_calls == [call("/data/file1", "/data/some/dir/"),
+                                    call("/data/file2", "/data/some/dir/")]
+
+
+def test_copy_absolute(mocker):
+    copy_mock = mocker.patch("shutil.copy")
+    service.copy(["/etc/passwd"], "/tmp")
+
+    assert copy_mock.mock_calls == [call("/data/etc/passwd", "/data/tmp/")]
+
+
+def test_remove_files(mocker):
+    def is_file_results(path):
+        return path in ["/data/file1", "/data/file2"]
+
+    def is_dir_results(path):
+        return path in ["/data/dir1"]
+
+    remove_mock = mocker.patch("os.remove")
+    rmtree_mock = mocker.patch("shutil.rmtree")
+    isfile_mock = mocker.patch("os.path.isfile")
+    isfile_mock.side_effect = is_file_results
+    isdir_mock = mocker.patch("os.path.isdir")
+    isdir_mock.side_effect = is_dir_results
+
+    service.remove(["file1", "file2", "dir1"])
+
+    assert remove_mock.mock_calls == [call("/data/file1"), call("/data/file2")]
+    assert rmtree_mock.mock_calls == [call("/data/dir1")]
+
+
+def test_remove_absolute(mocker):
+    remove_mock = mocker.patch("os.remove")
+    isfile_mock = mocker.patch("os.path.isfile")
+    isfile_mock.returns(True)
+    service.remove(["/etc/hosts"])
+
+    assert remove_mock.mock_calls == [call("/data/etc/hosts")]
