@@ -1,9 +1,7 @@
 from unittest.mock import call
 
-import pytest
-
-from ..models import FSEntry
 from .. import service
+from ..models import FSEntry
 
 
 def test_stat():
