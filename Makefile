@@ -66,5 +66,5 @@ shell: build
 	$(COMPOSE_ENV_CMD) /bin/bash
 
 test: build
-	$(COMPOSE_ENV_CMD) python manage.py test
+	$(COMPOSE_ENV_CMD) pytest
 

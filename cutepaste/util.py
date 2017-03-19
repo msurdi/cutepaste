@@ -20,6 +20,6 @@ def ajax_only(view):
     return _wrapped_view
 
 
-def ic_redirect(response:HttpResponse, url:str) -> HttpResponse:
+def ic_redirect(response: HttpResponse, url: str) -> HttpResponse:
     response["X-IC-PushURL"] = url
     return response

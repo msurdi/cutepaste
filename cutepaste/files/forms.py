@@ -7,7 +7,7 @@ from cutepaste.files.models import FSEntry
 
 
 class FilesEditForm(forms.Form):
-    def __init__(self, *args, files: List[FSEntry], **kwargs):
+    def __init__(self, *args, files: List[FSEntry], **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
         for file in files:

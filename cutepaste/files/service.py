@@ -2,7 +2,7 @@ import os
 import shutil
 import locale
 from os import path
-from typing import Callable, List
+from typing import Callable, List, Any
 from PyICU import Collator, Locale
 from django.conf import settings
 
@@ -40,7 +40,7 @@ def stat(file_path) -> FSEntry:
     return FSEntry(absolute_path, file_path)
 
 
-def _perfom_fs_operation(operation: Callable[[str, str], str], source_files: List[str], destination_path: str) -> None:
+def _perfom_fs_operation(operation: Callable[[str, str], Any], source_files: List[str], destination_path: str) -> None:
     root_path = getattr(settings, "CP_ROOT_DIRS", "/data")
     relative_destination_path = _relative_path(destination_path)
     for source_file in source_files:
