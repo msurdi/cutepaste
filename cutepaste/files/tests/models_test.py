@@ -17,10 +17,10 @@ def test_entry_paths(entry):
 
 
 def test_entry_file(entry, mocker):
-    isfile_mock = mocker.patch("os.path.isfile", autospec=True)
+    isfile_mock = mocker.patch("cutepaste.files.models.path.isfile", autospec=True)
     isfile_mock.return_value = True
 
-    isdir_mock = mocker.patch("os.path.isdir", autospec=True)
+    isdir_mock = mocker.patch("cutepaste.files.models.path.isdir", autospec=True)
     isdir_mock.return_value = False
 
     assert entry.is_file
