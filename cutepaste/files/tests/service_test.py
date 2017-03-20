@@ -98,7 +98,7 @@ def test_remove_files(mocker):
 def test_remove_absolute(mocker):
     remove_mock = mocker.patch("os.remove")
     isfile_mock = mocker.patch("os.path.isfile")
-    isfile_mock.returns(True)
+    isfile_mock.return_value = True
     service.remove(["/etc/hosts"])
 
     assert remove_mock.mock_calls == [call("/data/etc/hosts")]
