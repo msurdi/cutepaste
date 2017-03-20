@@ -2,7 +2,7 @@ from .. import views
 
 
 class FSEntryMock:
-    def __init__(self, name: str, is_file: bool = True):
+    def __init__(self, name: str, is_file: bool = True) -> None:
         self.name = name
         self.is_file = is_file
         self.is_dir = not is_file
