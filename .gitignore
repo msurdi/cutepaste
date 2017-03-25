@@ -4,3 +4,4 @@
 /static/vendor
 /index.whoosh
 /.cache
+/geckodriver.log
