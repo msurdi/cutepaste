@@ -10,7 +10,7 @@ urlpatterns = [
     url(r'^browse(?P<files_path>.*)$', views.ls, name="ls"),
     url(r'^trash(?P<files_path>.*)$', views.trash, name="trash"),
     url(r'^edit(?P<files_path>.*)$', views.edit, name="edit"),
-    url(r'^clipboard/cut$', lambda r: views.clipboard(r, "cut"), name="cut"),
-    url(r'^clipboard/copy$', lambda r: views.clipboard(r, "copy"), name="copy"),
+    url(r'^clipboard/cut$', lambda r: views.clipboard(r, views.CUT_OPERATION), name="cut"),
+    url(r'^clipboard/copy$', lambda r: views.clipboard(r, views.COPY_OPERATION), name="copy"),
     url(r'^clipboard/paste/(?P<files_path>.*)$', views.paste, name="paste"),
 ]

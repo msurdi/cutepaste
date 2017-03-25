@@ -1,3 +1,7 @@
+from unittest.mock import call
+
+from django.http import HttpResponse
+
 from .. import views
 
 
@@ -13,13 +17,118 @@ class FSEntryMock:
 def test_ls_directory(rf, mocker):
     ls_mock = mocker.patch("cutepaste.files.views.service.ls")
     ls_mock.return_value = [FSEntryMock("file1"), FSEntryMock("file2")]
-
     stat_mock = mocker.patch("cutepaste.files.views.service.stat")
     stat_mock.return_value = FSEntryMock("/", is_file=False)
     request = rf.get("/")
     request.session = {}
+
     response = views.ls(request, "/")
     response_body = response.content.decode("utf-8")
+
     assert response.status_code == 200
     assert 'href="/browse/file1"' in response_body
     assert 'href="/browse/file2"' in response_body
+
+
+def test_ls_file(rf, mocker):
+    def stat_results(path):
+        if path == "/file1":
+            return FSEntryMock("file1", is_file=True)
+
+    stat_mock = mocker.patch("cutepaste.files.views.service.stat")
+    stat_mock.side_effect = stat_results
+    request = rf.get("/")
+
+    response = views.ls(request, "/file1")
+
+    assert response.status_code == 200
+    assert response.has_header("X-Sendfile")
+    assert response["X-Sendfile"] == "/data/file1"
+    assert not response.content
+
+
+def test_clipboard(rf):
+    request = rf.post("/", {"selected": ["/file1", "/file2"]})
+    request.session = {}
+
+    response = views.clipboard(request, views.CUT_OPERATION)
+
+    assert request.session[views.CLIPBOARD_SESSION_KEY] == ["/file1", "/file2"]
+    assert request.session[views.OPERATION_SESSION_KEY] == "cut"
+    assert response.status_code == 200
+    response_body = response.content.decode("utf-8")
+    assert "<button" in response_body
+
+
+def test_clipboard_get(rf):
+    request = rf.get("/")
+    request.session = {}
+
+    response = views.clipboard(request, views.CUT_OPERATION)
+
+    assert request.session == {}
+    response_body = response.content.decode("utf-8")
+    assert "<button" in response_body
+
+
+def test_paste(rf, mocker):
+    move_mock = mocker.patch("cutepaste.files.views.service.move")
+    ls_mock = mocker.patch("cutepaste.files.views.ls")
+    ls_mock.return_value = HttpResponse("ls response", status=200)
+    request = rf.post("/", {"some": "data"})
+    request.session = {views.CLIPBOARD_SESSION_KEY: ["/file1"], views.OPERATION_SESSION_KEY: views.CUT_OPERATION}
+
+    response = views.paste(request, "/target")
+
+    assert move_mock.mock_calls == [call(["/file1"], "/target")]
+    assert response.status_code == 200
+    assert response.content == b"ls response"
+    assert request.session[views.CLIPBOARD_SESSION_KEY] == []
+    assert not request.session[views.OPERATION_SESSION_KEY]
+
+
+def test_trash(rf, mocker):
+    remove_mock = mocker.patch("cutepaste.files.views.service.remove")
+    ls_mock = mocker.patch("cutepaste.files.views.ls")
+    ls_mock.return_value = HttpResponse("ls response", status=200)
+    request = rf.post("/", {"selected": ["/file1"]})
+
+    response = views.trash(request, "/somedir")
+
+    assert remove_mock.mock_calls == [call(["/file1"])]
+    assert response.status_code == 200
+    assert response.content == b"ls response"
+
+
+def test_trash_get(rf):
+    request = rf.get("/")
+
+    response = views.trash(request)
+
+    assert response.status_code == 400
+
+
+def test_edit_get(rf, mocker):
+    mocker.patch("cutepaste.files.views.service.ls")
+    request = rf.get("/")
+
+    response = views.edit(request, "/dir")
+
+    assert response.status_code == 200
+    response_body = response.content.decode("utf-8")
+    assert "<form" in response_body
+
+
+def test_edit_post(rf, mocker):
+    ls_service_mock = mocker.patch("cutepaste.files.views.service.ls")
+    ls_service_mock.return_value = [FSEntryMock("dir/file1"), FSEntryMock("dir/file2")]
+    ls_mock = mocker.patch("cutepaste.files.views.ls")
+    ls_mock.return_value = HttpResponse("ls response", status=200)
+    rename_mock = mocker.patch("cutepaste.files.views.service.rename")
+    request = rf.post("/", {"/dir/file1": "file1.renamed", "/dir/file2": "file2"})
+
+    response = views.edit(request, "/dir")
+
+    assert rename_mock.mock_calls == [call("/dir/file1", "/dir/file1.renamed")]
+    assert response.status_code == 200
+    assert response.content == b"ls response"
