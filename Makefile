@@ -43,7 +43,7 @@ ifndef DOCKER
 	@echo "Docker is not available. Please install docker"
 	@exit 1
 endif
-	mkdir -p .data/{cutepaste,caddy} node_modules
+	mkdir -p .data/{cutepaste} node_modules
 
 base: deps
 	$(COMPOSE) -f build/base/docker-compose.yml build
