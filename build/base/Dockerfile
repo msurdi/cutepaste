@@ -1,7 +1,12 @@
-FROM python:3.6-alpine
+FROM python:3.6
 
 # Install required system packages
-RUN apk --update add ca-certificates nodejs gcc g++ musl-dev linux-headers bash mailcap icu-dev pcre-dev
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates nodejs npm build-essential bash libicu-dev\
+    && rm -r /var/lib/apt/lists/*
+
+
+RUN ln -s /usr/bin/nodejs /usr/bin/node
 
 # Upgrade base image pip
 RUN pip install pip==9.0.1
@@ -9,8 +14,8 @@ RUN pip install pip==9.0.1
 # Create user
 ARG uid=1000
 ARG gid=1000
-RUN addgroup -g $gid cutepaste
-RUN adduser -D -u $uid -G cutepaste cutepaste
+RUN groupadd --gid $gid cutepaste
+RUN useradd -m -u $uid -g $gid cutepaste
 
 RUN mkdir /code && chown -R cutepaste:cutepaste /code /usr/local /home/cutepaste
 WORKDIR /code
