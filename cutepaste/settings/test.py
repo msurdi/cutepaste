@@ -1,3 +1,5 @@
+from os import path
+
 from .default import *  # noqa: F403, F401
 
 DATABASES = {
@@ -6,3 +8,5 @@ DATABASES = {
         "NAME": ":memory:",
     }
 }
+
+CP_ROOT_DIR = path.join(BASE_DIR, "tests/fixtures/root")
