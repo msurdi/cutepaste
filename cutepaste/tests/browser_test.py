@@ -1,8 +1,9 @@
-import pytest
 from django.urls import reverse
 
+from cutepaste.tests.marks import slow
 
-@pytest.mark.slow
+
+@slow
 def test_index(live_server, webdriver):
     webdriver.get(live_server.url + reverse("files:ls", args=[""]))
     directories = webdriver.find_elements_by_css_selector(".dir-item")
