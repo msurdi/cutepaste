@@ -1,3 +1,5 @@
+import tempfile
+
 from os import path
 
 from .default import *  # noqa: F403, F401
@@ -9,4 +11,4 @@ DATABASES = {
     }
 }
 
-CP_ROOT_DIR = path.join(BASE_DIR, "tests/fixtures/root")  # noqa: F405
+CP_ROOT_DIR = path.join(tempfile.gettempdir(), "cutepaste-tests")

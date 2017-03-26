@@ -1,14 +1,17 @@
 import os
+import tempfile
 
 import pytest
+import shutil
 from pyvirtualdisplay import Display
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
+from django.conf import settings
 
 REPORTS_DIR = "reports"
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope="function")
 def webdriver(request):
     display = Display(visible=0, size=(800, 600), use_xauth=True)
     display.start()
@@ -31,3 +34,10 @@ def webdriver(request):
             f.write(driver.page_source)
     driver.quit()
     display.stop()
+
+
+@pytest.fixture(scope="function")
+def data_files():
+    if os.path.exists(settings.CP_ROOT_DIR):
+        shutil.rmtree(settings.CP_ROOT_DIR)
+    shutil.copytree(os.path.join(settings.BASE_DIR, "tests/fixtures/root"), settings.CP_ROOT_DIR)
