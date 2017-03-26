@@ -1,4 +1,3 @@
-import time
 from django.urls import reverse
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
