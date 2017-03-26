@@ -61,7 +61,7 @@
     <div class="list-group entries">
         {% if parent_path %}
             {% url 'files:ls' parent_path as parent_url %}
-            <a class="list-group-item"
+            <a class="list-group-item dir-item"
                href="{{ parent_url }}"
                data-ic-target=".page"
                data-ic-select-from-response=".page"
@@ -72,7 +72,7 @@
         {% endif %}
 
         {% for entry in entries %}
-            <div class="list-group-item">
+            <div class="list-group-item {% if entry.is_dir %}dir-item{% else %}file-item{% endif %}">
                 <div class="checkbox no-margin">
                     <input
                             type="checkbox"
