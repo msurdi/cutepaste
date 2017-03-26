@@ -47,7 +47,8 @@
                 class="btn btn-default no-outline">
             <span class="glyphicon glyphicon-edit"></span>
         </button>
-        <button label="Delete selected"
+        <button title="Delete selected"
+                id="trash-button"
                 data-ic-post-to="{% url "files:trash" current_path %}"
                 data-ic-target=".page"
                 data-ic-select-from-response=".page"
@@ -79,6 +80,7 @@
                             title="select"
                             name="selected"
                             value="{{ entry.relative_path }}"
+                            data-entry="{{ entry.relative_path }}"
                             data-ic-action="publish:'selectionChange'"
                             class="data-check">
                     <label>
