@@ -18,12 +18,12 @@ def _relative_path(file_path: str) -> str:
 
 
 def _absolute_path(file_path: str) -> str:
-    root_path = getattr(settings, "CP_ROOT_DIRS", "/data")
+    root_path = getattr(settings, "CP_ROOT_DIR", "/data")
     return path.join(root_path, _relative_path(file_path))
 
 
 def ls(files_path: str) -> List[FSEntry]:
-    root_path = getattr(settings, "CP_ROOT_DIRS", "/data")
+    root_path = getattr(settings, "CP_ROOT_DIR", "/data")
     relative_files_path = _relative_path(files_path)
     root_absolute_path = os.path.join(root_path, relative_files_path)
     entries = []
@@ -41,7 +41,7 @@ def stat(file_path) -> FSEntry:
 
 
 def _perfom_fs_operation(operation: Callable[[str, str], Any], source_files: List[str], destination_path: str) -> None:
-    root_path = getattr(settings, "CP_ROOT_DIRS", "/data")
+    root_path = getattr(settings, "CP_ROOT_DIR", "/data")
     relative_destination_path = _relative_path(destination_path)
     for source_file in source_files:
         relative_source_file = _relative_path(source_file)
@@ -65,7 +65,7 @@ def copy(source_files: List[str], destination_path: str) -> None:
 
 
 def remove(source_files: List[str]) -> None:
-    root_path = getattr(settings, "CP_ROOT_DIRS", "/data")
+    root_path = getattr(settings, "CP_ROOT_DIR", "/data")
     for source_file in source_files:
         relative_source_file = _relative_path(source_file)
         absolute_source_path = path.join(root_path, relative_source_file)
