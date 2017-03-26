@@ -15,6 +15,7 @@ def webdriver(request):
     options = Options()
     options.add_argument("--no-sandbox")
     driver = Chrome(chrome_options=options)
+    driver.implicitly_wait(1)
     prev_failed_tests = request.session.testsfailed
 
     yield driver
