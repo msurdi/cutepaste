@@ -1,3 +1,4 @@
+import pytest
 from django.urls import reverse
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
@@ -5,9 +6,11 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from cutepaste.tests.marks import slow
 
+pytestmark = pytest.mark.usefixtures("data_files")
+
 
 @slow
-def test_index(live_server, webdriver, data_files):
+def test_index(live_server, webdriver):
     webdriver.get(live_server.url + reverse("files:ls", args=[""]))
     directories = webdriver.find_elements_by_css_selector(".dir-item")
     files = webdriver.find_elements_by_css_selector(".file-item")
@@ -16,7 +19,7 @@ def test_index(live_server, webdriver, data_files):
 
 
 @slow
-def test_navigate_to_directory(live_server, webdriver, data_files):
+def test_navigate_to_directory(live_server, webdriver):
     webdriver.get(live_server.url + reverse("files:ls", args=[""]))
 
     dir1_links = webdriver.find_elements_by_link_text("dir1/")
@@ -32,7 +35,7 @@ def test_navigate_to_directory(live_server, webdriver, data_files):
 
 
 @slow
-def test_remove_file(live_server, webdriver, data_files):
+def test_remove_file(live_server, webdriver):
     webdriver.get(live_server.url + reverse("files:ls", args=[""]))
 
     file1_links = webdriver.find_elements_by_link_text("file1.txt")
