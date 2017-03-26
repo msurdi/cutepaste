@@ -9,4 +9,4 @@ DATABASES = {
     }
 }
 
-CP_ROOT_DIR = path.join(BASE_DIR, "tests/fixtures/root")
+CP_ROOT_DIR = path.join(BASE_DIR, "tests/fixtures/root")  # noqa: F405
