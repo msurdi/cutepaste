@@ -99,6 +99,9 @@ def test_copy_paste_file(live_server, webdriver):
 
     dir_up_link.click()
 
+    WebDriverWait(webdriver, 1).until(
+        EC.invisibility_of_element_located((By.LINK_TEXT, "dir1_file1.txt")))
+
     file1_links = webdriver.find_elements_by_link_text("file1.txt")
     assert len(file1_links) == 1
 
