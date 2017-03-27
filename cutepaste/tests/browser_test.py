@@ -105,6 +105,7 @@ def test_copy_paste_file(live_server, webdriver):
     file1_links = webdriver.find_elements_by_link_text("file1.txt")
     assert len(file1_links) == 1
 
+
 @slow
 def test_cut_paste_file(live_server, webdriver):
     webdriver.get(live_server.url + reverse("files:ls", args=[""]))
@@ -151,3 +152,24 @@ def test_cut_paste_file(live_server, webdriver):
 
     file1_links = webdriver.find_elements_by_link_text("file1.txt")
     assert len(file1_links) == 0
+
+
+@slow
+def test_select_all_then_none(live_server, webdriver):
+    webdriver.get(live_server.url + reverse("files:ls", args=[""]))
+
+    select_all_button = webdriver.find_element_by_id("select-all-button")
+
+    select_all_button.click()
+
+    checkboxes = webdriver.find_elements_by_css_selector("input[data-entry]")
+    assert len(checkboxes) == 3
+    assert all([checkbox.is_selected() for checkbox in checkboxes])
+
+    select_none_button = webdriver.find_element_by_id("select-none-button")
+
+    select_none_button.click()
+
+    checkboxes = webdriver.find_elements_by_css_selector("input[data-entry]")
+    assert len(checkboxes) == 3
+    assert all([not checkbox.is_selected() for checkbox in checkboxes])
