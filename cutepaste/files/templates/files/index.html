@@ -16,6 +16,7 @@
         </button>
 
         <button title="Cut selected"
+                id="cut-button"
                 data-ic-post-to="{% url "files:cut" %}"
                 data-ic-target="#clipboard-button"
                 data-ic-replace-target="true"
@@ -24,6 +25,7 @@
             <span class="glyphicon glyphicon-scissors"></span>
         </button>
         <button title="Copy selected"
+                id="copy-button"
                 data-ic-post-to="{% url "files:copy" %}"
                 data-ic-target="#clipboard-button"
                 data-ic-replace-target="true"
@@ -32,6 +34,7 @@
             <span class="glyphicon glyphicon-copy"></span>
         </button>
         <button title="Paste from clipboard"
+                id="paste-button"
                 data-ic-post-to="{% url "files:paste" current_path %}"
                 data-ic-target=".page"
                 data-ic-select-from-response=".page"
@@ -40,6 +43,7 @@
         </button>
         {% url "files:edit" current_path as edit_url %}
         <button title="Edit"
+                id="edit-button"
                 data-ic-get-from="{{ edit_url }}"
                 data-ic-target=".page"
                 data-ic-select-from-response=".page"
