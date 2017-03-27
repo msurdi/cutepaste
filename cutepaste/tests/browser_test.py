@@ -91,3 +91,14 @@ def test_copy_paste_file(live_server, webdriver):
 
     file1_links = webdriver.find_elements_by_link_text("file1.txt")
     assert len(file1_links) == 1
+
+    dir_up_links = webdriver.find_elements_by_link_text("../")
+    assert len(dir_up_links) == 1
+
+    dir_up_link = dir_up_links[0]
+
+    dir_up_link.click()
+
+    file1_links = webdriver.find_elements_by_link_text("file1.txt")
+    assert len(file1_links) == 1
+
