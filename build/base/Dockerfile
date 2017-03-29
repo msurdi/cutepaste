@@ -2,11 +2,13 @@ FROM python:3.6
 
 # Install required system packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates nodejs npm build-essential bash libicu-dev\
+    ca-certificates build-essential bash libicu-dev\
     && rm -r /var/lib/apt/lists/*
 
+# Install node
+RUN curl -sL https://deb.nodesource.com/setup_6.x | bash
 
-RUN ln -s /usr/bin/nodejs /usr/bin/node
+RUN apt-get install nodejs
 
 # Upgrade base image pip
 RUN pip install pip==9.0.1
