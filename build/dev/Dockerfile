@@ -2,7 +2,7 @@ FROM cutepaste:base
 
 USER root
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl xvfb xauth firefox-esr chromedriver chromium \
+    curl xvfb xauth chromedriver chromium \
     && rm -r /var/lib/apt/lists/*
 USER cutepaste
 
