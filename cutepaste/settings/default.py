@@ -101,10 +101,23 @@ STATIC_ROOT = "/tmp"
 COMPRESS_PRECOMPILERS = (
     ("text/less",
      "./node_modules/.bin/lessc --source-map-map-inline {infile} {outfile}"),
-    ("text/es6", "./node_modules/.bin/babel --source-maps inline {infile}"),
+    ("text/es6", "./node_modules/.bin/babel --source-maps inline {infile} -o {outfile}"),
 )
 
-COMPRESS_ENABLED = False
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/tmp',
+        'TIMEOUT': 600,
+        'OPTIONS': {
+            'MAX_ENTRIES': 1000
+        }
+    }
+}
+
+COMPRESS_ENABLED = True
+COMPRESS_CSS_HASHING_METHOD = "mtime"
+
 SILENCED_SYSTEM_CHECKS = ["urls.W001"]
 
 EXCEPTION_MAPPER_ENABLED = True
