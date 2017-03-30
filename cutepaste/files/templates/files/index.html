@@ -1,75 +1,16 @@
 {% extends "__layout.html" %}
 {% block content %}
-    <div class="btn-group btn-group-lg padding-5">
-        <button id="select-all-button"
-                title="Select all"
-                tabindex="-1"
-                class="btn btn-default no-outline on-selection-hide"
-                data-ic-action="publish:'selectAll'">
-            <span class="glyphicon glyphicon-check"></span>
-        </button>
-        <button id="select-none-button"
-                title="Unselect all"
-                class="btn btn-default no-outline default-hidden on-selection-show"
-                data-ic-action="publish:'unselectAll'">
-            <span class="glyphicon glyphicon-unchecked"></span>
-        </button>
+    <input type="hidden" id="clipboard-has-files" value="{% if clipboard_has_files %}true{% endif %}">
 
-        <button title="Cut selected"
-                id="cut-button"
-                data-ic-post-to="{% url "files:cut" %}"
-                data-ic-target="#clipboard-button"
-                data-ic-replace-target="true"
-                data-ic-include=".entries input"
-                class="btn btn-default no-outline default-hidden on-selection-show">
-            <span class="glyphicon glyphicon-scissors"></span>
-        </button>
-        <button title="Copy selected"
-                id="copy-button"
-                data-ic-post-to="{% url "files:copy" %}"
-                data-ic-target="#clipboard-button"
-                data-ic-replace-target="true"
-                data-ic-include=".entries input"
-                class="btn btn-default no-outline default-hidden on-selection-show">
-            <span class="glyphicon glyphicon-copy"></span>
-        </button>
-        <button title="Paste from clipboard"
-                id="paste-button"
-                data-ic-post-to="{% url "files:paste" current_path %}"
-                data-ic-target=".page"
-                data-ic-select-from-response=".page"
-                class="btn btn-default no-outline">
-            <span class="glyphicon glyphicon-paste"></span>
-        </button>
-        {% url "files:edit" current_path as edit_url %}
-        <button title="Edit"
-                id="edit-button"
-                data-ic-get-from="{{ edit_url }}"
-                data-ic-target=".page"
-                data-ic-select-from-response=".page"
-                data-ic-push-url="true"
-                class="btn btn-default no-outline">
-            <span class="glyphicon glyphicon-edit"></span>
-        </button>
-        <button title="Delete selected"
-                id="trash-button"
-                data-ic-post-to="{% url "files:trash" current_path %}"
-                data-ic-target=".page"
-                data-ic-select-from-response=".page"
-                data-ic-include=".entries input"
-                class="btn btn-default no-outline default-hidden on-selection-show">
-            <span class="glyphicon glyphicon-trash"></span>
-        </button>
-        {{ clipboard_button }}
-    </div>
-
+    {% include "files/_buttons.html" %}
     <div class="list-group entries">
+        <input type="hidden" id="current_path" name="current_path" value="{{ current_path }}">
+        <input type="hidden" id="total_files" name="total_files" value="{{ total_files }}">
         {% if parent_path %}
             {% url 'files:ls' parent_path as parent_url %}
             <a class="list-group-item dir-item"
                href="{{ parent_url }}"
                data-ic-target=".page"
-               data-ic-select-from-response=".page"
                data-ic-push-url="true"
                data-ic-get-from="{{ parent_url }}">
                 ../
@@ -85,14 +26,13 @@
                             name="selected"
                             value="{{ entry.relative_path }}"
                             data-entry="{{ entry.relative_path }}"
-                            data-ic-action="publish:'selectionChange'"
+                            data-ic-action="publish:'selectionChanged'"
                             class="data-check">
                     <label>
                         {% url 'files:ls' entry.relative_path as entry_url %}
                         <a class=""
                                 {% if entry.is_dir %}
                            data-ic-target=".page"
-                           data-ic-select-from-response=".page"
                            data-ic-push-url="true"
                            data-ic-get-from="{{ entry_url }}"
                                 {% endif %}

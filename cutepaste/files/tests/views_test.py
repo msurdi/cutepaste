@@ -26,8 +26,8 @@ def test_ls_directory(rf, mocker):
     response_body = response.content.decode("utf-8")
 
     assert response.status_code == 200
-    assert 'href="/browse/file1"' in response_body
-    assert 'href="/browse/file2"' in response_body
+    assert 'href="/ls/file1"' in response_body
+    assert 'href="/ls/file2"' in response_body
 
 
 def test_ls_file(rf, mocker):
@@ -47,38 +47,36 @@ def test_ls_file(rf, mocker):
     assert not response.content
 
 
-def test_clipboard(rf):
+def test_cut(rf):
     request = rf.post("/", {"selected": ["/file1", "/file2"]})
     request.session = {}
 
-    response = views.clipboard(request, views.CUT_OPERATION)
+    response = views.cut(request)
 
     assert request.session[views.CLIPBOARD_SESSION_KEY] == ["/file1", "/file2"]
-    assert request.session[views.OPERATION_SESSION_KEY] == "cut"
+    assert request.session[views.OPERATION_SESSION_KEY] == views.CUT_OPERATION
     assert response.status_code == 200
-    response_body = response.content.decode("utf-8")
-    assert "<button" in response_body
 
 
-def test_clipboard_get(rf):
-    request = rf.get("/")
+def test_copy(rf):
+    request = rf.post("/", {"selected": ["/file1", "/file2"]})
     request.session = {}
 
-    response = views.clipboard(request, views.CUT_OPERATION)
+    response = views.copy(request)
 
-    assert request.session == {}
-    response_body = response.content.decode("utf-8")
-    assert "<button" in response_body
+    assert request.session[views.CLIPBOARD_SESSION_KEY] == ["/file1", "/file2"]
+    assert request.session[views.OPERATION_SESSION_KEY] == views.COPY_OPERATION
+    assert response.status_code == 200
 
 
 def test_paste(rf, mocker):
     move_mock = mocker.patch("cutepaste.files.views.service.move")
     ls_mock = mocker.patch("cutepaste.files.views.ls")
     ls_mock.return_value = HttpResponse("ls response", status=200)
-    request = rf.post("/", {"some": "data"})
+    request = rf.post("/", {"some": "data", "current_path": "/target"})
     request.session = {views.CLIPBOARD_SESSION_KEY: ["/file1"], views.OPERATION_SESSION_KEY: views.CUT_OPERATION}
 
-    response = views.paste(request, "/target")
+    response = views.paste(request)
 
     assert move_mock.mock_calls == [call(["/file1"], "/target")]
     assert response.status_code == 200
@@ -91,9 +89,9 @@ def test_trash(rf, mocker):
     remove_mock = mocker.patch("cutepaste.files.views.service.remove")
     ls_mock = mocker.patch("cutepaste.files.views.ls")
     ls_mock.return_value = HttpResponse("ls response", status=200)
-    request = rf.post("/", {"selected": ["/file1"]})
+    request = rf.post("/", {"selected": ["/file1"], "current_path": ""})
 
-    response = views.trash(request, "/somedir")
+    response = views.trash(request)
 
     assert remove_mock.mock_calls == [call(["/file1"])]
     assert response.status_code == 200

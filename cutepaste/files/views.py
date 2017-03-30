@@ -1,9 +1,7 @@
 from os import path
 
-from django.http import HttpResponse
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render
-from django.template.loader import render_to_string
 from django.urls import reverse
 
 from cutepaste.files.forms import FilesEditForm
@@ -12,6 +10,7 @@ from . import service
 
 CLIPBOARD_SESSION_KEY = "clipboard"
 OPERATION_SESSION_KEY = "operation"
+OPERATION_SELECTED_KEY = "selected"
 CUT_OPERATION = "cut"
 COPY_OPERATION = "copy"
 
@@ -23,55 +22,83 @@ def ls(request, files_path: str = "") -> HttpResponse:
         response["X-Sendfile"] = entry.absolute_path
         return response
 
+    entries = service.ls(files_path)
+    clipboard_files = request.session.get(CLIPBOARD_SESSION_KEY, [])
     parent_path = ""
     if files_path:
         parent_path = path.join(files_path, "..")
 
     return render(request, "files/index.html", {
-        "entries": service.ls(files_path),
-        "current_path": files_path,
+        "entries": entries,
+        "total_files": len(entries),
         "parent_path": parent_path,
-        "clipboard_button": _render_clipboard_button(request),
+        "current_path": files_path,
+        "selected_files": [],
+        "total_selected_files": 0,
+        "clipboard_files": clipboard_files,
+        "total_clipboard_files": len(clipboard_files),
+
     })
 
 
-def clipboard(request, operation: str) -> HttpResponse:
-    if request.POST:
-        if operation not in [CUT_OPERATION, COPY_OPERATION]:
-            return HttpResponseBadRequest(f"Operation should be one of [{CUT_OPERATION}, {COPY_OPERATION}]")
-        request.session[CLIPBOARD_SESSION_KEY] = request.POST.getlist("selected", [])
-        request.session[OPERATION_SESSION_KEY] = operation
+def buttons(request) -> HttpResponse:
+    selected_files = request.GET.getlist("selected", [])
+    clipboard_files = request.session.get(CLIPBOARD_SESSION_KEY, [])
 
-    return HttpResponse(_render_clipboard_button(request))
-
-
-def _render_clipboard_button(request) -> str:
-    return render_to_string("files/_clipboard_button.html", request=request, context={
-        "clipboard_has_files": len(request.session.get(CLIPBOARD_SESSION_KEY, [])) > 0,
+    return render(request, "files/_buttons.html", {
+        "total_files": int(request.GET.get("total_files", 0)),
+        "current_path": request.GET["current_path"],
+        "selected_files": selected_files,
+        "total_selected_files": len(selected_files),
+        "clipboard_files": clipboard_files,
+        "total_clipboard_files": len(clipboard_files),
     })
 
 
-def paste(request, files_path: str = "") -> HttpResponse:
-    if request.POST:
-        if request.session[OPERATION_SESSION_KEY] == CUT_OPERATION:
-            service.move(request.session.get(CLIPBOARD_SESSION_KEY, []), files_path)
-        elif request.session[OPERATION_SESSION_KEY] == COPY_OPERATION:
-            service.copy(request.session.get(CLIPBOARD_SESSION_KEY, []), files_path)
-        else:
-            return HttpResponseBadRequest("Cannot paste from selected operation")
-
-        request.session[CLIPBOARD_SESSION_KEY] = []
-        request.session[OPERATION_SESSION_KEY] = None
-
-    return ls(request, files_path)
-
-
-def trash(request, files_path: str = "") -> HttpResponse:
+def copy(request) -> HttpResponse:
     if not request.POST:
         return HttpResponseBadRequest()
 
+    request.session[OPERATION_SESSION_KEY] = COPY_OPERATION
+    request.session[CLIPBOARD_SESSION_KEY] = request.POST.getlist("selected", [])
+
+    return HttpResponse(status=200)
+
+
+def cut(request) -> HttpResponse:
+    if not request.POST:
+        return HttpResponseBadRequest()
+
+    request.session[OPERATION_SESSION_KEY] = CUT_OPERATION
+    request.session[CLIPBOARD_SESSION_KEY] = request.POST.getlist("selected", [])
+    return HttpResponse(status=200)
+
+
+def paste(request) -> HttpResponse:
+    if not request.POST or "current_path" not in request.POST:
+        return HttpResponseBadRequest()
+
+    current_path = request.POST["current_path"]
+    if request.session[OPERATION_SESSION_KEY] == CUT_OPERATION:
+        service.move(request.session.get(CLIPBOARD_SESSION_KEY, []), current_path)
+    elif request.session[OPERATION_SESSION_KEY] == COPY_OPERATION:
+        service.copy(request.session.get(CLIPBOARD_SESSION_KEY, []), current_path)
+    else:
+        return HttpResponseBadRequest("Cannot paste from selected operation")
+
+    request.session[CLIPBOARD_SESSION_KEY] = []
+    request.session[OPERATION_SESSION_KEY] = None
+
+    return ls(request, current_path)
+
+
+def trash(request) -> HttpResponse:
+    if not request.POST or "selected" not in request.POST:
+        return HttpResponseBadRequest()
+    current_path = request.POST["current_path"]
+
     service.remove(request.POST.getlist("selected", []))
-    return ls(request, files_path)
+    return ls(request, current_path)
 
 
 def edit(request, files_path: str = "") -> HttpResponse:

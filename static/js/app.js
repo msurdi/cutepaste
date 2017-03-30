@@ -1,5 +1,5 @@
 $(document).on("beforeAjaxSend.ic", setupCsrfHeader);
-$.subscribe("selectionChange", selectionChange);
+$.subscribe("selectionChanged", selectionChanged);
 $.subscribe("selectAll", selectAll);
 $.subscribe("unselectAll", unselectAll);
 
@@ -10,32 +10,23 @@ function setupCsrfHeader(event, ajaxSetup) {
     }
 }
 
-function selectionChange() {
-    let hideElements = $(".on-selection-hide");
-    let showElements = $(".on-selection-show");
-    let anySelected = $(".data-check:checked").length > 0;
-    if (anySelected) {
-        hideElements.hide();
-        showElements.show();
-    } else {
-        hideElements.show();
-        showElements.hide();
-    }
+function selectionChanged() {
+    Intercooler.refresh("/buttons");
 }
+
+function clipboardChanged() {};
 
 function selectAll() {
     let checkElements = $(".data-check");
     checkElements.prop("checked", true);
-    $.publish("selectionChange");
+    $.publish("selectionChanged")
 }
-
 
 function unselectAll() {
     let checkElements = $(".data-check");
     checkElements.prop("checked", false);
-    $.publish("selectionChange");
+    $.publish("selectionChanged")
 }
-
 
 function csrfSafeMethod(method) {
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
