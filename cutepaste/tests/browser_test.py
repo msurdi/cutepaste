@@ -173,3 +173,97 @@ def test_select_all_then_none(live_server, webdriver):
     checkboxes = webdriver.find_elements_by_css_selector("input[data-entry]")
     assert len(checkboxes) == 3
     assert all([not checkbox.is_selected() for checkbox in checkboxes])
+
+
+@slow
+def test_buttons_visibility_no_selection_no_clipboard(live_server, webdriver):
+    webdriver.get(live_server.url + reverse("files:ls", args=[""]))
+    assert webdriver.find_elements_by_css_selector("#select-all-button")
+    assert webdriver.find_elements_by_css_selector("#edit-button")
+    assert not webdriver.find_elements_by_css_selector("#select-none-button")
+    assert not webdriver.find_elements_by_css_selector("#copy-button")
+    assert not webdriver.find_elements_by_css_selector("#cut-button")
+    assert not webdriver.find_elements_by_css_selector("#trash-button")
+    assert not webdriver.find_elements_by_css_selector("#clipboard-button")
+    assert not webdriver.find_elements_by_css_selector("#paste-button")
+
+
+@slow
+def test_buttons_visibility_no_selection_with_clipboard(live_server, webdriver):
+    webdriver.get(live_server.url + reverse("files:ls", args=[""]))
+
+    # Select a file and copy it to the clipboard
+    file1_links = webdriver.find_elements_by_link_text("file1.txt")
+    assert len(file1_links) == 1
+
+    file1_checkboxes = webdriver.find_elements_by_css_selector("input[data-entry='file1.txt']")
+    assert len(file1_checkboxes) == 1
+
+    file1_checkbox = file1_checkboxes[0]
+    file1_checkbox.click()
+
+    copy_button = webdriver.find_element_by_id("copy-button")
+
+    copy_button.click()
+
+    file1_checkbox.click()
+
+    assert webdriver.find_elements_by_css_selector("#select-all-button")
+    assert webdriver.find_elements_by_css_selector("#edit-button")
+    assert not webdriver.find_elements_by_css_selector("#select-none-button")
+    assert not webdriver.find_elements_by_css_selector("#copy-button")
+    assert not webdriver.find_elements_by_css_selector("#cut-button")
+    assert not webdriver.find_elements_by_css_selector("#trash-button")
+    assert webdriver.find_elements_by_css_selector("#clipboard-button")
+    assert webdriver.find_elements_by_css_selector("#paste-button")
+
+
+@slow
+def test_buttons_visibility_with_selection_no_clipboard(live_server, webdriver):
+    webdriver.get(live_server.url + reverse("files:ls", args=[""]))
+
+    # Select a file and copy it to the clipboard
+    file1_links = webdriver.find_elements_by_link_text("file1.txt")
+    assert len(file1_links) == 1
+
+    file1_checkboxes = webdriver.find_elements_by_css_selector("input[data-entry='file1.txt']")
+    assert len(file1_checkboxes) == 1
+
+    file1_checkbox = file1_checkboxes[0]
+    file1_checkbox.click()
+
+    assert webdriver.find_elements_by_css_selector("#select-all-button")
+    assert webdriver.find_elements_by_css_selector("#edit-button")
+    assert webdriver.find_elements_by_css_selector("#select-none-button")
+    assert webdriver.find_elements_by_css_selector("#copy-button")
+    assert webdriver.find_elements_by_css_selector("#cut-button")
+    assert webdriver.find_elements_by_css_selector("#trash-button")
+    assert not webdriver.find_elements_by_css_selector("#clipboard-button")
+    assert not webdriver.find_elements_by_css_selector("#paste-button")
+
+@slow
+def test_buttons_visibility_with_selection_with_clipboard(live_server, webdriver):
+    webdriver.get(live_server.url + reverse("files:ls", args=[""]))
+
+    # Select a file and copy it to the clipboard
+    file1_links = webdriver.find_elements_by_link_text("file1.txt")
+    assert len(file1_links) == 1
+
+    file1_checkboxes = webdriver.find_elements_by_css_selector("input[data-entry='file1.txt']")
+    assert len(file1_checkboxes) == 1
+
+    file1_checkbox = file1_checkboxes[0]
+    file1_checkbox.click()
+
+    copy_button = webdriver.find_element_by_id("copy-button")
+
+    copy_button.click()
+
+    assert webdriver.find_elements_by_css_selector("#select-all-button")
+    assert webdriver.find_elements_by_css_selector("#edit-button")
+    assert webdriver.find_elements_by_css_selector("#select-none-button")
+    assert webdriver.find_elements_by_css_selector("#copy-button")
+    assert webdriver.find_elements_by_css_selector("#cut-button")
+    assert webdriver.find_elements_by_css_selector("#trash-button")
+    assert webdriver.find_elements_by_css_selector("#clipboard-button")
+    assert webdriver.find_elements_by_css_selector("#paste-button")
