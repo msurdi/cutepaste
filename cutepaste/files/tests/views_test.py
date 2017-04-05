@@ -10,7 +10,7 @@ class FSEntryMock:
         self.name = name
         self.is_file = is_file
         self.is_dir = not is_file
-        self.relative_path = f"/{name}"
+        self.relative_path = f"{name}"
         self.absolute_path = f"/data/{name}"
 
 
@@ -71,16 +71,14 @@ def test_copy(rf):
 
 def test_paste(rf, mocker):
     move_mock = mocker.patch("cutepaste.files.views.service.move")
-    ls_mock = mocker.patch("cutepaste.files.views.ls")
-    ls_mock.return_value = HttpResponse("ls response", status=200)
-    request = rf.post("/", {"some": "data", "current_path": "/target"})
+    request = rf.post("/", {"some": "data", "current_path": "target"})
     request.session = {views.CLIPBOARD_SESSION_KEY: ["/file1"], views.OPERATION_SESSION_KEY: views.CUT_OPERATION}
 
     response = views.paste(request)
 
-    assert move_mock.mock_calls == [call(["/file1"], "/target")]
+    assert move_mock.mock_calls == [call(["/file1"], "target")]
     assert response.status_code == 200
-    assert response.content == b"ls response"
+    assert response.content == b'{"script": "Turbolinks.visit(\'/ls/target\')"}'
     assert request.session[views.CLIPBOARD_SESSION_KEY] == []
     assert not request.session[views.OPERATION_SESSION_KEY]
 
@@ -95,7 +93,7 @@ def test_trash(rf, mocker):
 
     assert remove_mock.mock_calls == [call(["/file1"])]
     assert response.status_code == 200
-    assert response.content == b"ls response"
+    assert response.content == b'{"script": "Turbolinks.visit(\'/ls/\')"}'
 
 
 def test_trash_get(rf):
@@ -103,7 +101,7 @@ def test_trash_get(rf):
 
     response = views.trash(request)
 
-    assert response.status_code == 400
+    assert response.status_code == 405
 
 
 def test_edit_get(rf, mocker):
@@ -123,10 +121,10 @@ def test_edit_post(rf, mocker):
     ls_mock = mocker.patch("cutepaste.files.views.ls")
     ls_mock.return_value = HttpResponse("ls response", status=200)
     rename_mock = mocker.patch("cutepaste.files.views.service.rename")
-    request = rf.post("/", {"/dir/file1": "file1.renamed", "/dir/file2": "file2"})
+    request = rf.post("/", {"dir/file1": "file1.renamed", "dir/file2": "file2"})
 
-    response = views.edit(request, "/dir")
+    response = views.edit(request, "dir")
 
-    assert rename_mock.mock_calls == [call("/dir/file1", "/dir/file1.renamed")]
+    assert rename_mock.mock_calls == [call("dir/file1", "dir/file1.renamed")]
     assert response.status_code == 200
-    assert response.content == b"ls response"
+    assert response.content == b'{"script": "Turbolinks.visit(\'/ls/dir\')"}'

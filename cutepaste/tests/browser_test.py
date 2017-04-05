@@ -41,7 +41,7 @@ def test_remove_file(live_server, webdriver):
     file1_links = webdriver.find_elements_by_link_text("file1.txt")
     assert len(file1_links) == 1
 
-    file1_checkboxes = webdriver.find_elements_by_css_selector("input[data-entry='file1.txt']")
+    file1_checkboxes = webdriver.find_elements_by_css_selector("input[value='file1.txt']")
     assert len(file1_checkboxes) == 1
 
     file1_checkbox = file1_checkboxes[0]
@@ -65,7 +65,7 @@ def test_copy_paste_file(live_server, webdriver):
     file1_links = webdriver.find_elements_by_link_text("file1.txt")
     assert len(file1_links) == 1
 
-    file1_checkboxes = webdriver.find_elements_by_css_selector("input[data-entry='file1.txt']")
+    file1_checkboxes = webdriver.find_elements_by_css_selector("input[value='file1.txt']")
     assert len(file1_checkboxes) == 1
 
     file1_checkbox = file1_checkboxes[0]
@@ -113,7 +113,7 @@ def test_cut_paste_file(live_server, webdriver):
     file1_links = webdriver.find_elements_by_link_text("file1.txt")
     assert len(file1_links) == 1
 
-    file1_checkboxes = webdriver.find_elements_by_css_selector("input[data-entry='file1.txt']")
+    file1_checkboxes = webdriver.find_elements_by_css_selector("input[value='file1.txt']")
     assert len(file1_checkboxes) == 1
 
     file1_checkbox = file1_checkboxes[0]
@@ -162,7 +162,7 @@ def test_select_all_then_none(live_server, webdriver):
 
     select_all_button.click()
 
-    checkboxes = webdriver.find_elements_by_css_selector("input[data-entry]")
+    checkboxes = webdriver.find_elements_by_css_selector("input[type=checkbox]")
     assert len(checkboxes) == 3
     assert all([checkbox.is_selected() for checkbox in checkboxes])
 
@@ -170,7 +170,7 @@ def test_select_all_then_none(live_server, webdriver):
 
     select_none_button.click()
 
-    checkboxes = webdriver.find_elements_by_css_selector("input[data-entry]")
+    checkboxes = webdriver.find_elements_by_css_selector("input[type=checkbox]")
     assert len(checkboxes) == 3
     assert all([not checkbox.is_selected() for checkbox in checkboxes])
 
@@ -196,7 +196,7 @@ def test_buttons_visibility_no_selection_with_clipboard(live_server, webdriver):
     file1_links = webdriver.find_elements_by_link_text("file1.txt")
     assert len(file1_links) == 1
 
-    file1_checkboxes = webdriver.find_elements_by_css_selector("input[data-entry='file1.txt']")
+    file1_checkboxes = webdriver.find_elements_by_css_selector("input[value='file1.txt']")
     assert len(file1_checkboxes) == 1
 
     file1_checkbox = file1_checkboxes[0]
@@ -226,7 +226,7 @@ def test_buttons_visibility_with_selection_no_clipboard(live_server, webdriver):
     file1_links = webdriver.find_elements_by_link_text("file1.txt")
     assert len(file1_links) == 1
 
-    file1_checkboxes = webdriver.find_elements_by_css_selector("input[data-entry='file1.txt']")
+    file1_checkboxes = webdriver.find_elements_by_css_selector("input[value='file1.txt']")
     assert len(file1_checkboxes) == 1
 
     file1_checkbox = file1_checkboxes[0]
@@ -241,6 +241,7 @@ def test_buttons_visibility_with_selection_no_clipboard(live_server, webdriver):
     assert not webdriver.find_elements_by_css_selector("#clipboard-button")
     assert not webdriver.find_elements_by_css_selector("#paste-button")
 
+
 @slow
 def test_buttons_visibility_with_selection_with_clipboard(live_server, webdriver):
     webdriver.get(live_server.url + reverse("files:ls", args=[""]))
@@ -249,7 +250,7 @@ def test_buttons_visibility_with_selection_with_clipboard(live_server, webdriver
     file1_links = webdriver.find_elements_by_link_text("file1.txt")
     assert len(file1_links) == 1
 
-    file1_checkboxes = webdriver.find_elements_by_css_selector("input[data-entry='file1.txt']")
+    file1_checkboxes = webdriver.find_elements_by_css_selector("input[value='file1.txt']")
     assert len(file1_checkboxes) == 1
 
     file1_checkbox = file1_checkboxes[0]

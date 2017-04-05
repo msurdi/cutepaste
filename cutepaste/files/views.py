@@ -1,11 +1,14 @@
 from os import path
 
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
+from cutepaste.files import components
 from cutepaste.files.forms import FilesEditForm
-from cutepaste.util import ic_redirect
+from cutepaste.util import ajax_redirect
 from . import service
 
 CLIPBOARD_SESSION_KEY = "clipboard"
@@ -15,65 +18,110 @@ CUT_OPERATION = "cut"
 COPY_OPERATION = "copy"
 
 
-def ls(request, files_path: str = "") -> HttpResponse:
-    entry = service.stat(files_path)
-    if entry.is_file:
+def ls(request, current_path: str = "") -> HttpResponse:
+    file = service.stat(current_path)
+
+    if file.is_file:
         response = HttpResponse()
-        response["X-Sendfile"] = entry.absolute_path
+        response["X-Sendfile"] = file.absolute_path
         return response
 
-    entries = service.ls(files_path)
+    files = service.ls(current_path)
     clipboard_files = request.session.get(CLIPBOARD_SESSION_KEY, [])
-    parent_path = ""
-    if files_path:
-        parent_path = path.join(files_path, "..")
-
     return render(request, "files/index.html", {
-        "entries": entries,
-        "total_files": len(entries),
-        "parent_path": parent_path,
-        "current_path": files_path,
-        "selected_files": [],
-        "total_selected_files": 0,
-        "clipboard_files": clipboard_files,
-        "total_clipboard_files": len(clipboard_files),
-
+        "browser": components.browser(
+            files=files,
+            current_path=current_path,
+            clipboard_files=clipboard_files,
+            selection_status="none"),
     })
 
 
-def buttons(request) -> HttpResponse:
-    selected_files = request.GET.getlist("selected", [])
-    clipboard_files = request.session.get(CLIPBOARD_SESSION_KEY, [])
+def edit(request, current_path: str = "") -> HttpResponse:
+    files = service.ls(current_path)
+    edit_form = FilesEditForm(request.POST or None, files=files)
 
-    return render(request, "files/_buttons.html", {
-        "total_files": int(request.GET.get("total_files", 0)),
-        "current_path": request.GET["current_path"],
-        "selected_files": selected_files,
-        "total_selected_files": len(selected_files),
-        "clipboard_files": clipboard_files,
-        "total_clipboard_files": len(clipboard_files),
+    if request.POST:
+        if edit_form.is_valid():
+            for relative_path, new_name in edit_form.cleaned_data.items():
+                new_relative_path = path.join(current_path, new_name)
+                if relative_path != new_relative_path:
+                    service.rename(relative_path, new_relative_path)
+            redirect_url = reverse("files:ls", args=[current_path])
+            return ajax_redirect(redirect_url)
+        return JsonResponse({
+            "components": {
+                "#edit-form": components.edit_form(form=edit_form, current_path=current_path)
+            }
+        })
+
+    return render(request, "files/edit.html", {
+        "current_path": current_path,
+        "edit_form": components.edit_form(
+            form=edit_form,
+            current_path=current_path,
+        ),
     })
 
 
+@api_view(["post"])
 def copy(request) -> HttpResponse:
-    if not request.POST:
-        return HttpResponseBadRequest()
+    clipboard_files = request.POST.getlist("selected", [])
+    current_path = request.POST.get("current_path", "")
+    selection_status = request.POST.get("selection_status", "none")
 
     request.session[OPERATION_SESSION_KEY] = COPY_OPERATION
     request.session[CLIPBOARD_SESSION_KEY] = request.POST.getlist("selected", [])
 
-    return HttpResponse(status=200)
+    return Response({
+        "components": {
+            "#buttons": components.buttons(
+                current_path=current_path,
+                clipboard_files=clipboard_files,
+                selection_status=selection_status,
+            )
+        }
+    })
 
 
-def cut(request) -> HttpResponse:
-    if not request.POST:
-        return HttpResponseBadRequest()
+@api_view(["post"])
+def cut(request) -> Response:
+    clipboard_files = request.POST.getlist("selected", [])
+    current_path = request.POST.get("current_path", "")
+    selection_status = request.POST.get("selection_status", "none")
 
     request.session[OPERATION_SESSION_KEY] = CUT_OPERATION
-    request.session[CLIPBOARD_SESSION_KEY] = request.POST.getlist("selected", [])
-    return HttpResponse(status=200)
+    request.session[CLIPBOARD_SESSION_KEY] = clipboard_files
+
+    return Response({
+        "components": {
+            "#buttons": components.buttons(
+                current_path=current_path,
+                clipboard_files=clipboard_files,
+                selection_status=selection_status,
+            )
+        }
+    })
 
 
+@api_view(["get"])
+def select(request) -> Response:
+    clipboard_files = request.session.get(CLIPBOARD_SESSION_KEY, [])
+    current_path = request.GET.get("current_path", "")
+    selection_status = request.GET.get("selection_status", "none")
+
+    return Response({
+        "components": {
+            "#buttons": components.buttons(
+                current_path=current_path,
+                clipboard_files=clipboard_files,
+                selection_status=selection_status,
+            )
+        }
+    })
+
+
+@api_view(["post"])
 def paste(request) -> HttpResponse:
     if not request.POST or "current_path" not in request.POST:
         return HttpResponseBadRequest()
@@ -88,32 +136,14 @@ def paste(request) -> HttpResponse:
 
     request.session[CLIPBOARD_SESSION_KEY] = []
     request.session[OPERATION_SESSION_KEY] = None
+    return ajax_redirect(reverse("files:ls", args=[current_path]))
 
-    return ls(request, current_path)
 
-
+@api_view(["post"])
 def trash(request) -> HttpResponse:
-    if not request.POST or "selected" not in request.POST:
+    if "selected" not in request.POST:
         return HttpResponseBadRequest()
+
     current_path = request.POST["current_path"]
-
     service.remove(request.POST.getlist("selected", []))
-    return ls(request, current_path)
-
-
-def edit(request, files_path: str = "") -> HttpResponse:
-    files = service.ls(files_path)
-    edit_form = FilesEditForm(request.POST or None, files=files)
-
-    if edit_form.is_valid():
-        for relative_path, new_name in edit_form.cleaned_data.items():
-            new_relative_path = path.join(files_path, new_name)
-            if relative_path != new_relative_path:
-                service.rename(relative_path, new_relative_path)
-        redirect_url = reverse("files:ls", args=[files_path])
-        return ic_redirect(ls(request, files_path), redirect_url)
-
-    return render(request, "files/edit.html", {
-        "current_path": files_path,
-        "edit_form": edit_form,
-    })
+    return ajax_redirect(reverse("files:ls", args=[current_path]))

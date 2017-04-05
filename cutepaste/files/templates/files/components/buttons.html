@@ -1,0 +1,76 @@
+<div class="btn-group btn-group-lg padding-5"
+     id="buttons">
+    <a title="Edit"
+       href="{% url "files:edit" current_path %}"
+       id="edit-button"
+       class="btn btn-default no-outline">
+        <span class="glyphicon glyphicon-edit"></span>
+    </a>
+    {% if selection_status == "some" or selection_status == "none" %}
+        <label id="select-all-button"
+               data-ajax
+               data-url="{% url "files:select" %}"
+               data-include="#current-path,#selection-status"
+               data-action="trigger:select-all;trigger:selection-change"
+               title="Select all"
+               class="btn btn-default no-outline">
+            <span class="glyphicon glyphicon-check"></span>
+        </label>
+    {% endif %}
+    {% if selection_status == "some" or selection_status == "all" %}
+        <label id="select-none-button"
+               data-ajax
+               data-url="{% url "files:select" %}"
+               data-include="#current-path,#selection-status"
+               data-action="trigger:select-none;trigger:selection-change"
+               title="Unselect all"
+               class="btn btn-default no-outline">
+            <span class="glyphicon glyphicon-unchecked"></span>
+        </label>
+    {% endif %}
+    {% if selection_status != "none" %}
+        <label title="Cut selected"
+               id="cut-button"
+               data-ajax
+               data-url="{% url "files:cut" %}"
+               data-method="post"
+               data-include="#filelist input"
+               class="btn btn-default no-outline">
+            <span class="glyphicon glyphicon-scissors"></span>
+        </label>
+        <label title="Copy selected"
+               data-ajax
+               data-url="{% url "files:copy" %}"
+               data-method="post"
+               data-include="#filelist input"
+               id="copy-button"
+               class="btn btn-default no-outline">
+            <span class="glyphicon glyphicon-copy"></span>
+        </label>
+        <label title="Delete selected"
+               data-ajax
+               data-url="{% url "files:trash" %}"
+               data-method="post"
+               data-include="#filelist input"
+               id="trash-button"
+               class="btn btn-default no-outline">
+            <span class="glyphicon glyphicon-trash"></span>
+        </label>
+    {% endif %}
+    {% if clipboard_files %}
+        <label title="Paste from clipboard"
+               id="paste-button"
+               data-ajax
+               data-method="post"
+               data-url="{% url "files:paste" %}"
+               data-include="#filelist input"
+               class="btn btn-default no-outline">
+            <span class="glyphicon glyphicon-paste"></span>
+        </label>
+        <label id="clipboard-button"
+               title="Clipboard"
+               class="btn btn-default no-outline btn-warning">
+            <span class="glyphicon glyphicon-paperclip"></span>
+        </label>
+    {% endif %}
+</div>

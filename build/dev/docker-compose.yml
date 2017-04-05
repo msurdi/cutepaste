@@ -8,7 +8,6 @@ services:
     volumes:
       - ../../.data:/data
       - ../..:/code
-      - /code/node_modules
       - ~/.gitconfig:/home/cutepaste/.gitignore:ro
       - ~/.ssh:/home/cutepaste/.ssh:ro
       - ~/.bash_history.cutepaste:/home/cutepaste/.bash_history

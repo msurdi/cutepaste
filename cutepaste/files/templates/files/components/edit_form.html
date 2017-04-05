@@ -1,0 +1,27 @@
+<form id="edit-form" class="form-horizontal">
+    {% for field in edit_form %}
+        <div class="form-group {% if field.errors %}has-error{% endif %}">
+            <label for="{{ field.id }}" class="col-sm-2 control-label">{{ field.label }}</label>
+            <div class="col-sm-10">
+                <input type="text"
+                       class="form-control"
+                       id="{{ field.id }}"
+                       value="{{ field.value }}"
+                       name="{{ field.html_name }}">
+                {% if field.errors %}
+                    {% for error in field.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+    <button type="submit"
+            data-ajax
+            data-url="{% url "files:edit" current_path %}"
+            data-method="post"
+            data-include=".entries input"
+            class="btn btn-default">
+        Save
+    </button>
+</form>

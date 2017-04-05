@@ -1,0 +1,33 @@
+<div class="list-group entries" id="filelist">
+    <input type="hidden" id="current-path" name="current_path" value="{{ current_path }}">
+    <input type="hidden" id="selection-status" name="selection_status" value="none">
+    {% if parent_path %}
+        {% url 'files:ls' parent_path as parent_url %}
+        <a class="list-group-item dir-item" href="{{ parent_url }}">../</a>
+    {% endif %}
+
+    {% for file in files %}
+        <div class="list-group-item {% if file.is_dir %}dir-item{% else %}file-item{% endif %}">
+            <div class="checkbox no-margin">
+                <input type="checkbox"
+                       title="select"
+                       name="selected"
+                       data-ajax
+                       data-url="{% url "files:select" %}"
+                       data-include="#current-path,#selection-status"
+                       data-action="trigger:selection-change"
+                       data-on="select-all,select-none"
+                       data-on-select-all="prop:checked,true"
+                       data-on-select-none="prop:checked,"
+                       value="{{ file.relative_path }}"
+                       class="data-check">
+                <label>
+                    <a href="{% url 'files:ls' file.relative_path %}">
+                        {{ file.name }}{% if file.is_dir %}/{% endif %}
+                    </a>
+                </label>
+            </div>
+
+        </div>
+    {% endfor %}
+</div>

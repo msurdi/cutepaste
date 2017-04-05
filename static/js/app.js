@@ -1,33 +1,24 @@
-$(document).on("beforeAjaxSend.ic", setupCsrfHeader);
-$.subscribe("selectionChanged", selectionChanged);
-$.subscribe("selectAll", selectAll);
-$.subscribe("unselectAll", unselectAll);
+let $document = $(document);
+$document.on("selection-change", selectionChange);
+Turbolinks.start();
 
-function setupCsrfHeader(event, ajaxSetup) {
-    let csrftoken = $("#csrftoken").val();
-    if (!csrfSafeMethod(ajaxSetup.type) && !this.crossDomain) {
-        ajaxSetup.headers["X-CSRFToken"] = csrftoken;
+function selectionChange() {
+    let filesCheckboxes = $("#filelist").find("input[type='checkbox']");
+    let selectedCheckboxes = filesCheckboxes.filter(":checked");
+    let $selectionStatus = $("#selection-status");
+
+    if (filesCheckboxes.length === selectedCheckboxes.length) {
+        $selectionStatus.val("all");
+    } else if (selectedCheckboxes.length === 0) {
+        $selectionStatus.val("none");
+    } else {
+        $selectionStatus.val("some");
     }
 }
 
-function selectionChanged() {
-    Intercooler.refresh("/buttons");
-}
-
-function clipboardChanged() {};
-
-function selectAll() {
-    let checkElements = $(".data-check");
-    checkElements.prop("checked", true);
-    $.publish("selectionChanged")
-}
-
-function unselectAll() {
-    let checkElements = $(".data-check");
-    checkElements.prop("checked", false);
-    $.publish("selectionChanged")
-}
-
-function csrfSafeMethod(method) {
-    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-}
+$.ajaxSetup({
+    beforeSend: function (xhr) {
+        let csrftoken = $("#csrftoken").val();
+        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+    }
+});

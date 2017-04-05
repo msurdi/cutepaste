@@ -83,7 +83,7 @@ STATIC_URL = "/static/"
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "../static"),
     ("jquery", os.path.join(BASE_DIR, "../node_modules/jquery/dist")),
-    ("intercooler", os.path.join(BASE_DIR, "../node_modules/intercooler/src")),
+    ("turbolinks", os.path.join(BASE_DIR, "../node_modules/turbolinks/dist")),
     ("font-awesome/css", os.path.join(BASE_DIR, "../node_modules/font-awesome/css")),
     ("font-awesome/fonts", os.path.join(BASE_DIR, "../node_modules/font-awesome/fonts")),
     ("bootstrap", os.path.join(BASE_DIR, "../node_modules/bootstrap/dist")),
@@ -124,3 +124,9 @@ EXCEPTION_MAPPER_ENABLED = True
 
 CP_ROOT_DIR = "/data"
 CP_SHOW_HIDDEN_FILES = False
+
+REST_FRAMEWORK = {  # type: ignore
+    'DEFAULT_AUTHENTICATION_CLASSES': [],
+    'DEFAULT_PERMISSION_CLASSES': [],
+    'UNAUTHENTICATED_USER': None,
+}

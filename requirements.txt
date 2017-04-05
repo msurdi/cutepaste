@@ -6,3 +6,4 @@ django-extensions==1.7.4
 gevent==1.2.1
 uwsgi==2.0.14
 PyICU==1.9.5
+djangorestframework==3.6.2

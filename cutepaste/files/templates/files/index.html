@@ -1,48 +1,4 @@
 {% extends "__layout.html" %}
 {% block content %}
-    <input type="hidden" id="clipboard-has-files" value="{% if clipboard_has_files %}true{% endif %}">
-
-    {% include "files/_buttons.html" %}
-    <div class="list-group entries">
-        <input type="hidden" id="current_path" name="current_path" value="{{ current_path }}">
-        <input type="hidden" id="total_files" name="total_files" value="{{ total_files }}">
-        {% if parent_path %}
-            {% url 'files:ls' parent_path as parent_url %}
-            <a class="list-group-item dir-item"
-               href="{{ parent_url }}"
-               data-ic-target=".page"
-               data-ic-push-url="true"
-               data-ic-get-from="{{ parent_url }}">
-                ../
-            </a>
-        {% endif %}
-
-        {% for entry in entries %}
-            <div class="list-group-item {% if entry.is_dir %}dir-item{% else %}file-item{% endif %}">
-                <div class="checkbox no-margin">
-                    <input
-                            type="checkbox"
-                            title="select"
-                            name="selected"
-                            value="{{ entry.relative_path }}"
-                            data-entry="{{ entry.relative_path }}"
-                            data-ic-action="publish:'selectionChanged'"
-                            class="data-check">
-                    <label>
-                        {% url 'files:ls' entry.relative_path as entry_url %}
-                        <a class=""
-                                {% if entry.is_dir %}
-                           data-ic-target=".page"
-                           data-ic-push-url="true"
-                           data-ic-get-from="{{ entry_url }}"
-                                {% endif %}
-                           href="{{ entry_url }}">
-                            {{ entry.name }}{% if entry.is_dir %}/{% endif %}
-                        </a>
-                    </label>
-                </div>
-
-            </div>
-        {% endfor %}
-    </div>
+    {{ browser }}
 {% endblock %}
