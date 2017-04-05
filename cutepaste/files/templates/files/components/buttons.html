@@ -4,7 +4,7 @@
        href="{% url "files:edit" current_path %}"
        id="edit-button"
        class="btn btn-default no-outline">
-        <span class="glyphicon glyphicon-edit"></span>
+        <i class="fa fa-pencil fa-lg" aria-hidden="true"></i>
     </a>
     {% if selection_status == "some" or selection_status == "none" %}
         <label id="select-all-button"
@@ -14,7 +14,7 @@
                data-action="trigger:select-all;trigger:selection-change"
                title="Select all"
                class="btn btn-default no-outline">
-            <span class="glyphicon glyphicon-check"></span>
+            <i class="fa fa-check-square-o fa-lg" aria-hidden="true"></i>
         </label>
     {% endif %}
     {% if selection_status == "some" or selection_status == "all" %}
@@ -25,7 +25,7 @@
                data-action="trigger:select-none;trigger:selection-change"
                title="Unselect all"
                class="btn btn-default no-outline">
-            <span class="glyphicon glyphicon-unchecked"></span>
+            <i class="fa fa-square-o fa-lg" aria-hidden="true"></i>
         </label>
     {% endif %}
     {% if selection_status != "none" %}
@@ -36,7 +36,7 @@
                data-method="post"
                data-include="#filelist input"
                class="btn btn-default no-outline">
-            <span class="glyphicon glyphicon-scissors"></span>
+            <i class="fa fa-scissors fa-lg" aria-hidden="true"></i>
         </label>
         <label title="Copy selected"
                data-ajax
@@ -45,7 +45,7 @@
                data-include="#filelist input"
                id="copy-button"
                class="btn btn-default no-outline">
-            <span class="glyphicon glyphicon-copy"></span>
+            <i class="fa fa-files-o fa-lg" aria-hidden="true"></i>
         </label>
         <label title="Delete selected"
                data-ajax
@@ -54,7 +54,7 @@
                data-include="#filelist input"
                id="trash-button"
                class="btn btn-default no-outline">
-            <span class="glyphicon glyphicon-trash"></span>
+            <i class="fa fa-trash-o fa-lg" aria-hidden="true"></i>
         </label>
     {% endif %}
     {% if clipboard_files %}
@@ -65,12 +65,12 @@
                data-url="{% url "files:paste" %}"
                data-include="#filelist input"
                class="btn btn-default no-outline">
-            <span class="glyphicon glyphicon-paste"></span>
+            <i class="fa fa-clipboard fa-lg" aria-hidden="true"></i>
         </label>
         <label id="clipboard-button"
                title="Clipboard"
                class="btn btn-default no-outline btn-warning">
-            <span class="glyphicon glyphicon-paperclip"></span>
+            <i class="fa fa-file fa-lg" aria-hidden="true"></i>
         </label>
     {% endif %}
 </div>
