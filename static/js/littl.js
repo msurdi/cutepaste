@@ -7,7 +7,7 @@
             type: method,
             data: data,
             dataType: 'json',
-            headers: {"X-Fewer": true}
+            headers: {"X-Littl": true}
         }).done((data, textStatus, jqXHR) => {
             if (!data) {
                 data = {};
