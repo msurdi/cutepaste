@@ -184,7 +184,6 @@ def test_buttons_visibility_no_selection_no_clipboard(live_server, webdriver):
     assert not webdriver.find_elements_by_css_selector("#copy-button")
     assert not webdriver.find_elements_by_css_selector("#cut-button")
     assert not webdriver.find_elements_by_css_selector("#trash-button")
-    assert not webdriver.find_elements_by_css_selector("#clipboard-button")
     assert not webdriver.find_elements_by_css_selector("#paste-button")
 
 
@@ -214,7 +213,6 @@ def test_buttons_visibility_no_selection_with_clipboard(live_server, webdriver):
     assert not webdriver.find_elements_by_css_selector("#copy-button")
     assert not webdriver.find_elements_by_css_selector("#cut-button")
     assert not webdriver.find_elements_by_css_selector("#trash-button")
-    assert webdriver.find_elements_by_css_selector("#clipboard-button")
     assert webdriver.find_elements_by_css_selector("#paste-button")
 
 
@@ -238,7 +236,6 @@ def test_buttons_visibility_with_selection_no_clipboard(live_server, webdriver):
     assert webdriver.find_elements_by_css_selector("#copy-button")
     assert webdriver.find_elements_by_css_selector("#cut-button")
     assert webdriver.find_elements_by_css_selector("#trash-button")
-    assert not webdriver.find_elements_by_css_selector("#clipboard-button")
     assert not webdriver.find_elements_by_css_selector("#paste-button")
 
 
@@ -266,5 +263,4 @@ def test_buttons_visibility_with_selection_with_clipboard(live_server, webdriver
     assert webdriver.find_elements_by_css_selector("#copy-button")
     assert webdriver.find_elements_by_css_selector("#cut-button")
     assert webdriver.find_elements_by_css_selector("#trash-button")
-    assert webdriver.find_elements_by_css_selector("#clipboard-button")
     assert webdriver.find_elements_by_css_selector("#paste-button")
