@@ -104,7 +104,7 @@ def test_trash_get(rf):
     assert response.status_code == 405
 
 
-def test_edit_get(rf, mocker):
+def test_edit(rf, mocker):
     mocker.patch("cutepaste.files.views.service.ls")
     request = rf.get("/")
 
@@ -115,15 +115,15 @@ def test_edit_get(rf, mocker):
     assert "<form" in response_body
 
 
-def test_edit_post(rf, mocker):
+def test_rename(rf, mocker):
     ls_service_mock = mocker.patch("cutepaste.files.views.service.ls")
     ls_service_mock.return_value = [FSEntryMock("dir/file1"), FSEntryMock("dir/file2")]
     ls_mock = mocker.patch("cutepaste.files.views.ls")
     ls_mock.return_value = HttpResponse("ls response", status=200)
     rename_mock = mocker.patch("cutepaste.files.views.service.rename")
-    request = rf.post("/", {"dir/file1": "file1.renamed", "dir/file2": "file2"})
+    request = rf.post("/", {"dir/file1": "file1.renamed", "dir/file2": "file2", "current_path": "dir"})
 
-    response = views.edit(request, "dir")
+    response = views.rename(request)
 
     assert rename_mock.mock_calls == [call("dir/file1", "dir/file1.renamed")]
     assert response.status_code == 200

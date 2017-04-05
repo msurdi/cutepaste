@@ -73,6 +73,7 @@ def rename(request):
         }
     })
 
+
 @api_view(["post"])
 def copy(request) -> HttpResponse:
     clipboard_files = request.POST.getlist("selected", [])
