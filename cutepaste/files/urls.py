@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.conf.urls import url
 from django.urls import reverse_lazy
 from django.views.generic import RedirectView
@@ -11,7 +12,7 @@ urlpatterns = [
     url(r'^edit/(?P<current_path>.*)$', views.edit, name="edit"),
     url(r'^ajax/rename/$', views.rename, name="rename"),
     url(r'^ajax/trash/$', views.trash, name="trash"),
-    url(r'^ajax/select/$', views.select, name="select"),
+    url(fr'^ajax/select/{settings.CP_VERSION}/$', views.select, name="select"),
     url(r'^ajax/cut/$', views.cut, name="cut"),
     url(r'^ajax/copy/$', views.copy, name="copy"),
     url(r'^ajax/paste/$', views.paste, name="paste"),

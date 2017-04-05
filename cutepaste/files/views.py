@@ -3,6 +3,7 @@ from os import path
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
+from django.views.decorators.cache import cache_page
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -114,6 +115,7 @@ def cut(request) -> Response:
     })
 
 
+@cache_page(60 * 60 * 24)
 @api_view(["get"])
 def select(request) -> Response:
     clipboard_files = request.session.get(CLIPBOARD_SESSION_KEY, [])

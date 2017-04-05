@@ -1,4 +1,5 @@
 import os
+import uuid
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -122,11 +123,13 @@ SILENCED_SYSTEM_CHECKS = ["urls.W001"]
 
 EXCEPTION_MAPPER_ENABLED = True
 
-CP_ROOT_DIR = "/data"
-CP_SHOW_HIDDEN_FILES = False
-
 REST_FRAMEWORK = {  # type: ignore
     'DEFAULT_AUTHENTICATION_CLASSES': [],
     'DEFAULT_PERMISSION_CLASSES': [],
     'UNAUTHENTICATED_USER': None,
 }
+
+# Cutepaste own settings
+CP_ROOT_DIR = "/data"
+CP_SHOW_HIDDEN_FILES = False
+CP_VERSION = os.environ.get("CP_VERSION", str(uuid.uuid4()))
