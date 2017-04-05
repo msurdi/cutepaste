@@ -41,20 +41,6 @@ def edit(request, current_path: str = "") -> HttpResponse:
     files = service.ls(current_path)
     edit_form = FilesEditForm(request.POST or None, files=files)
 
-    if request.POST:
-        if edit_form.is_valid():
-            for relative_path, new_name in edit_form.cleaned_data.items():
-                new_relative_path = path.join(current_path, new_name)
-                if relative_path != new_relative_path:
-                    service.rename(relative_path, new_relative_path)
-            redirect_url = reverse("files:ls", args=[current_path])
-            return ajax_redirect(redirect_url)
-        return JsonResponse({
-            "components": {
-                "#edit-form": components.edit_form(form=edit_form, current_path=current_path)
-            }
-        })
-
     return render(request, "files/edit.html", {
         "current_path": current_path,
         "edit_form": components.edit_form(
@@ -63,6 +49,29 @@ def edit(request, current_path: str = "") -> HttpResponse:
         ),
     })
 
+
+@api_view(["post"])
+def rename(request):
+    current_path = request.POST.get("current_path")
+    files = service.ls(current_path)
+    edit_form = FilesEditForm(request.POST, files=files)
+
+    if edit_form.is_valid():
+        for relative_path, new_name in edit_form.cleaned_data.items():
+            new_relative_path = path.join(current_path, new_name)
+            if relative_path != new_relative_path:
+                service.rename(relative_path, new_relative_path)
+        redirect_url = reverse("files:ls", args=[current_path])
+        return ajax_redirect(redirect_url)
+
+    return JsonResponse({
+        "components": {
+            "#edit-form": components.edit_form(
+                form=edit_form,
+                current_path=current_path,
+            ),
+        }
+    })
 
 @api_view(["post"])
 def copy(request) -> HttpResponse:
