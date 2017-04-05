@@ -11,6 +11,7 @@ COPY static/images/ /code/static/images
 COPY static/js/ /code/static/js
 COPY static/styles/ /code/static/styles
 COPY cutepaste /code/cutepaste
+COPY VERSION /code/
 RUN python manage.py compress && \
     python manage.py collectstatic --no-input
 CMD /code/start.sh

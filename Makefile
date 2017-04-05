@@ -7,7 +7,7 @@ SERVICE_NAME := cutepaste
 HISTORY_FILE := ~/.bash_history.$(SERVICE_NAME)
 
 # Get the current version of the project
-VERSION ?= $(shell git rev-parse HEAD)
+VERSION ?= $(shell git rev-parse --short HEAD)
 
 # Shell to use for running scripts
 SHELL := $(shell which bash)
@@ -49,7 +49,9 @@ base: deps
 	$(COMPOSE) -f build/base/docker-compose.yml build
 
 build: base
+	echo $(VERSION) > VERSION
 	$(COMPOSE_ENV) build
+	rm VERSION
 
 start: build
 	$(COMPOSE_ENV) up --force-recreate
