@@ -57,7 +57,7 @@
         if (targetSelector) {
             let foundTarget = $(targetSelector).length > 0;
             if (foundTarget) {
-                $target = $(foundTarget);
+                $target = $(targetSelector);
             }
         }
         if (actions) {
@@ -94,6 +94,10 @@
         if (data["components"]) {
             $.each(data["components"], (selector, content) => {
                 $(selector).replaceWith(content);
+            });
+        } else if (data["components-inner"]) {
+            $.each(data["components-inner"], (selector, content) => {
+                $(selector).html(content);
             });
         }
     }

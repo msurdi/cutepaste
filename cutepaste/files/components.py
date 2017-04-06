@@ -7,6 +7,12 @@ from cutepaste.files.forms import FilesEditForm
 from cutepaste.files.models import FSEntry
 
 
+def confirm_trash() -> str:
+    return render_to_string(
+        "files/components/confirm_trash.html",
+        context={}
+    )
+
 def browser(files: List[FSEntry], current_path: str, clipboard_files: str, selection_status: str) -> str:
     return render_to_string(
         "files/components/browser.html",

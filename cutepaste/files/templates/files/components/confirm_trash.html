@@ -1,0 +1,15 @@
+<div id="confirm-trash">
+    Confirm remove?
+    <button data-ajax
+            data-method="post"
+            data-include="#filelist input"
+            data-url="{% url "files:trash" %}"
+            class="btn btn-danger">
+        Delete
+    </button>
+    <button data-action="hide"
+            data-target="#confirm-trash"
+            class="btn">
+        Cancel
+    </button>
+</div>

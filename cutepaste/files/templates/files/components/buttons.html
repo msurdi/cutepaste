@@ -49,9 +49,7 @@
         </label>
         <label title="Delete selected"
                data-ajax
-               data-url="{% url "files:trash" %}"
-               data-method="post"
-               data-include="#filelist input"
+               data-url="{% url "files:confirm-trash" %}"
                id="trash-button"
                class="btn btn-default no-outline">
             <i class="fa fa-trash-o fa-lg" aria-hidden="true"></i>

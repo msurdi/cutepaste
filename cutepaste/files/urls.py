@@ -16,4 +16,5 @@ urlpatterns = [
     url(r'^ajax/cut/$', views.cut, name="cut"),
     url(r'^ajax/copy/$', views.copy, name="copy"),
     url(r'^ajax/paste/$', views.paste, name="paste"),
+    url(r'^ajax/confirm-trash/$', views.confirm_trash, name="confirm-trash"),
 ]

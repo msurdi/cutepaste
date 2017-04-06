@@ -133,6 +133,14 @@ def select(request) -> Response:
     })
 
 
+@api_view(["get"])
+def confirm_trash(request) -> Response:
+    return Response({
+        "components-inner": {
+            "#messages": components.confirm_trash(),
+        }
+    })
+
 @api_view(["post"])
 def paste(request) -> HttpResponse:
     if not request.POST or "current_path" not in request.POST:
