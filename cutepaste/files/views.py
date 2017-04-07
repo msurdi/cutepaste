@@ -141,6 +141,7 @@ def confirm_trash(request) -> Response:
         }
     })
 
+
 @api_view(["post"])
 def paste(request) -> HttpResponse:
     if not request.POST or "current_path" not in request.POST:

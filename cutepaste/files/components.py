@@ -13,6 +13,7 @@ def confirm_trash() -> str:
         context={}
     )
 
+
 def browser(files: List[FSEntry], current_path: str, clipboard_files: str, selection_status: str) -> str:
     return render_to_string(
         "files/components/browser.html",
