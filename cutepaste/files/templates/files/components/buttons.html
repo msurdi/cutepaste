@@ -1,10 +1,14 @@
 <div class="btn-group btn-group-lg padding-5"
      id="buttons">
+    <input type="hidden"
+           id="clipboard-status"
+           name="clipboard-status"
+           value="{% if clipboard_files %}1{% else %}0{% endif %}">
     {% if selection_status == "some" or selection_status == "none" %}
         <label id="select-all-button"
                data-ajax
                data-url="{% url "files:select" %}"
-               data-include="#current-path,#selection-status"
+               data-include="#filelist input,#buttons input"
                data-action="trigger:select-all;trigger:selection-change"
                title="Select all"
                class="btn btn-default no-outline">
@@ -15,7 +19,7 @@
         <label id="select-none-button"
                data-ajax
                data-url="{% url "files:select" %}"
-               data-include="#current-path,#selection-status"
+               data-include="#filelist input,#buttons input"
                data-action="trigger:select-none;trigger:selection-change"
                title="Unselect all"
                class="btn btn-default no-outline">
@@ -34,7 +38,7 @@
                data-ajax
                data-url="{% url "files:cut" %}"
                data-method="post"
-               data-include="#filelist input"
+               data-include="#filelist input,#buttons input"
                class="btn btn-default no-outline">
             <i class="fa fa-scissors fa-lg" aria-hidden="true"></i>
         </label>
@@ -42,7 +46,7 @@
                data-ajax
                data-url="{% url "files:copy" %}"
                data-method="post"
-               data-include="#filelist input"
+               data-include="#filelist input,#buttons input"
                id="copy-button"
                class="btn btn-default no-outline">
             <i class="fa fa-files-o fa-lg" aria-hidden="true"></i>

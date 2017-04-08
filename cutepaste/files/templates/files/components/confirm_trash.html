@@ -3,13 +3,15 @@
         <p>
             Are you sure you want to remove the selected files?
         </p>
-        <button data-ajax
+        <button id="confirm-trash-button"
+                data-ajax
                 data-method="post"
                 data-include="#filelist input"
                 data-url="{% url "files:trash" %}"
                 class="btn btn-danger">Delete
         </button>
-        <button data-action="hide"
+        <button id="cancel-trash-button"
+                data-action="hide"
                 data-target="#confirm-trash"
                 class="btn">
             Cancel

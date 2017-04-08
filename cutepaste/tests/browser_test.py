@@ -1,8 +1,8 @@
 import pytest
 from django.urls import reverse
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
 
 from cutepaste.tests.marks import slow
 
@@ -50,6 +50,9 @@ def test_remove_file(live_server, webdriver):
     trash_button = webdriver.find_element_by_id("trash-button")
 
     trash_button.click()
+
+    confirm_trash_button = webdriver.find_element_by_id("confirm-trash-button")
+    confirm_trash_button.click()
 
     WebDriverWait(webdriver, 1).until(
         EC.invisibility_of_element_located((By.LINK_TEXT, "file1.txt")))
@@ -205,6 +208,9 @@ def test_buttons_visibility_no_selection_with_clipboard(live_server, webdriver):
 
     copy_button.click()
 
+    WebDriverWait(webdriver, 1).until(
+         EC.visibility_of_element_located((By.CSS_SELECTOR, "#paste-button")))
+
     file1_checkbox.click()
 
     assert webdriver.find_elements_by_css_selector("#select-all-button")
@@ -256,6 +262,9 @@ def test_buttons_visibility_with_selection_with_clipboard(live_server, webdriver
     copy_button = webdriver.find_element_by_id("copy-button")
 
     copy_button.click()
+
+    WebDriverWait(webdriver, 1).until(
+         EC.visibility_of_element_located((By.CSS_SELECTOR, "#select-none-button")))
 
     assert webdriver.find_elements_by_css_selector("#select-all-button")
     assert webdriver.find_elements_by_css_selector("#edit-button")

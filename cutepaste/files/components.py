@@ -14,7 +14,7 @@ def confirm_trash() -> str:
     )
 
 
-def browser(files: List[FSEntry], current_path: str, clipboard_files: str, selection_status: str) -> str:
+def browser(files: List[FSEntry], current_path: str, clipboard_files: List[str], selection_status: str) -> str:
     return render_to_string(
         "files/components/browser.html",
         context={
@@ -28,7 +28,7 @@ def browser(files: List[FSEntry], current_path: str, clipboard_files: str, selec
     )
 
 
-def filelist(files: List[FSEntry], current_path: str, clipboard_files: str) -> str:
+def filelist(files: List[FSEntry], current_path: str, clipboard_files: List[str]) -> str:
     parent_path = ""
     if current_path:
         parent_path = path.join(current_path, "..")
@@ -45,7 +45,7 @@ def filelist(files: List[FSEntry], current_path: str, clipboard_files: str) -> s
         })
 
 
-def buttons(current_path: str, clipboard_files: str, selection_status: str) -> str:
+def buttons(current_path: str, clipboard_files: List[str], selection_status: str) -> str:
     return render_to_string(
         "files/components/buttons.html",
         context={
