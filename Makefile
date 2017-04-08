@@ -1,4 +1,4 @@
-.PHONY: default deps base build start stop shell run test
+.PHONY: default deps base build start stop shell run test push
 
 # Name of this service/application
 SERVICE_NAME := cutepaste
@@ -8,6 +8,9 @@ HISTORY_FILE := ~/.bash_history.$(SERVICE_NAME)
 
 # Get the current version of the project
 VERSION ?= $(shell git rev-parse --short HEAD)
+
+# Get current branch name
+export BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
 
 # Shell to use for running scripts
 SHELL := $(shell which bash)
@@ -72,4 +75,5 @@ test: build
 
 push:
 	BUILD_ENV=prod make
-	$(DOCKER) push msurdi/cutepaste:latest
+	$(DOCKER) tag msurdi/cutepaste:latest msurdi/cutepaste:$(BRANCH)
+	$(DOCKER) push msurdi/cutepaste:$(BRANCH)
