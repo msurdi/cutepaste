@@ -1,4 +1,5 @@
 FROM python:3.6
+MAINTAINER Matias Surdi <matias@surdi.net>
 
 # Install required system packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
