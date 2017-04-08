@@ -3,4 +3,4 @@
 /reports
 /node_modules
 /.*
-/screenshot.png
+/Makefile

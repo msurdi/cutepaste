@@ -1,4 +1,4 @@
-FROM cutepaste:base
+FROM msurdi/cutepaste:base
 ENV DJANGO_SETTINGS_MODULE=cutepaste.settings.prod
 COPY package.json /code/
 RUN npm install 

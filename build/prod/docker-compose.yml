@@ -4,7 +4,7 @@ services:
     build:
       context: ../..
       dockerfile: build/prod/Dockerfile
-    image: cutepaste:prod
+    image: msurdi/cutepaste:latest
     command: "./start.sh"
     ports:
      - "8080:8080"

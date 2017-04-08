@@ -7,6 +7,6 @@ services:
         gid: ${GID}
       context: ../..
       dockerfile: build/base/Dockerfile
-    image: cutepaste:base
+    image: msurdi/cutepaste:base
     working_dir: /code
     command: "/bin/true"

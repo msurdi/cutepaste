@@ -70,3 +70,6 @@ shell: build
 test: build
 	$(COMPOSE_ENV_CMD) pytest --runslow
 
+push:
+	BUILD_ENV=prod make
+	$(DOCKER) push msurdi/cutepaste:latest
