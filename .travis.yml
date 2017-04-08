@@ -8,3 +8,5 @@ before_install:
   - DEBIAN_FRONTEND=noninteractive sudo apt-get -y -o Dpkg::Options::="--force-confnew" --force-yes install docker-engine
 script:
   - make test
+after_success:
+  - make push
