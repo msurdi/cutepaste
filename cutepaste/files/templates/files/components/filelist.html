@@ -7,8 +7,7 @@
     {% endif %}
 
     {% for file in files %}
-        <a href="{% url 'files:ls' file.relative_path %}"
-           class="list-group-item {% if file.is_dir %}dir-item{% else %}file-item{% endif %}">
+        <div class="list-group-item clickable">
             <div class="checkbox no-margin">
                 <input type="checkbox"
                        title="select"
@@ -22,11 +21,13 @@
                        data-on-select-none="prop:checked,"
                        value="{{ file.relative_path }}"
                        class="data-check">
-                <label>
+                <label class="block">
+                    <a href="{% url 'files:ls' file.relative_path %}"
+                       class="block {% if file.is_dir %}dir-item{% else %}file-item{% endif %}">
                         {{ file.name }}{% if file.is_dir %}/{% endif %}
+                    </a>
                 </label>
             </div>
-
-        </a>
+        </div>
     {% endfor %}
 </div>

@@ -78,3 +78,35 @@ html {
 .no-display {
   display: none;
 }
+
+.block {
+  display: block !important;
+}
+
+.list-group-item.clickable {
+  &:hover {
+    background-color: #f5f5f5;
+  }
+  padding-top: 0;
+  padding-bottom: 0;
+  line-height: 40px;
+
+  a {
+    &:hover {
+      text-decoration: none;
+    }
+    color: inherit;
+  }
+
+}
+
+.checkbox {
+  label:before {
+    top: 10px;
+  }
+  label:after {
+  }
+  input[type="checkbox"] {
+    top: 10px;
+  }
+}
