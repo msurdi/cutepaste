@@ -6,6 +6,8 @@ Cutepaste
 Web based file browser focused on copying/pasting
 server side files.
 
+![screenshot](http://i.imgur.com/OHXw31q.png)
+
 
 Trying it out
 -------------
