@@ -1,11 +1,23 @@
-<div class="list-group entries" id="filelist">
+<div id="filelist">
+    {% if parent_paths %}
+        <ol class="breadcrumb no-margin" id="breadcrumbs">
+            <li>
+                <a href="{% url "files:ls" "" %}">
+                    <i class="fa fa-home fa-lg"></i>
+                </a>
+            </li>
+            {% for name, parent_path in parent_paths %}
+                {% if forloop.last %}
+                    <li class="active">{{ name }}</li>
+                {% else %}
+                    <li><a href="{% url "files:ls" parent_path %}">{{ name }}</a></li>
+                {% endif %}
+            {% endfor %}
+        </ol>
+    {% endif %}
+    <div class="list-group entries">
     <input type="hidden" id="current-path" name="current_path" value="{{ current_path }}">
     <input type="hidden" id="selection-status" name="selection_status" value="none">
-    {% if parent_path %}
-        {% url 'files:ls' parent_path as parent_url %}
-        <a class="list-group-item dir-item" href="{{ parent_url }}">../</a>
-    {% endif %}
-
     {% for file in files %}
         <div class="list-group-item clickable">
             <div class="checkbox no-margin">
@@ -30,4 +42,5 @@
             </div>
         </div>
     {% endfor %}
+</div>
 </div>

@@ -35,6 +35,25 @@ def test_navigate_to_directory(live_server, webdriver):
 
 
 @slow
+def test_breadcrumbs(live_server, webdriver):
+    webdriver.get(live_server.url + reverse("files:ls", args=[""]))
+
+    home_breacrumb = webdriver.find_elements_by_css_selector("a[href='/ls/']")
+
+    assert len(home_breacrumb) == 1
+
+    webdriver.get(live_server.url + reverse("files:ls", args=["dir1/subdir1"]))
+
+    breadcrumbs_list = webdriver.find_elements_by_css_selector("#breadcrumbs li")
+
+    assert len(breadcrumbs_list) == 3
+
+    breadcrumb_parent = webdriver.find_elements_by_css_selector("a[href='/ls/dir1']")
+
+    assert len(breadcrumb_parent) == 1
+
+
+@slow
 def test_remove_file(live_server, webdriver):
     webdriver.get(live_server.url + reverse("files:ls", args=[""]))
 
@@ -95,7 +114,7 @@ def test_copy_paste_file(live_server, webdriver):
     file1_links = webdriver.find_elements_by_link_text("file1.txt")
     assert len(file1_links) == 1
 
-    dir_up_links = webdriver.find_elements_by_link_text("../")
+    dir_up_links = webdriver.find_elements_by_css_selector("a[href='/ls/']")
     assert len(dir_up_links) == 1
 
     dir_up_link = dir_up_links[0]
@@ -143,7 +162,7 @@ def test_cut_paste_file(live_server, webdriver):
     file1_links = webdriver.find_elements_by_link_text("file1.txt")
     assert len(file1_links) == 1
 
-    dir_up_links = webdriver.find_elements_by_link_text("../")
+    dir_up_links = webdriver.find_elements_by_css_selector("a[href='/ls/']")
     assert len(dir_up_links) == 1
 
     dir_up_link = dir_up_links[0]
@@ -209,7 +228,7 @@ def test_buttons_visibility_no_selection_with_clipboard(live_server, webdriver):
     copy_button.click()
 
     WebDriverWait(webdriver, 1).until(
-         EC.visibility_of_element_located((By.CSS_SELECTOR, "#paste-button")))
+        EC.visibility_of_element_located((By.CSS_SELECTOR, "#paste-button")))
 
     file1_checkbox.click()
 
@@ -264,7 +283,7 @@ def test_buttons_visibility_with_selection_with_clipboard(live_server, webdriver
     copy_button.click()
 
     WebDriverWait(webdriver, 1).until(
-         EC.visibility_of_element_located((By.CSS_SELECTOR, "#select-none-button")))
+        EC.visibility_of_element_located((By.CSS_SELECTOR, "#select-none-button")))
 
     assert webdriver.find_elements_by_css_selector("#select-all-button")
     assert webdriver.find_elements_by_css_selector("#edit-button")

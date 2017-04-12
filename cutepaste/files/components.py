@@ -1,7 +1,5 @@
-from os import path
-
 from django.template.loader import render_to_string
-from typing import List
+from typing import Iterator, List, Tuple
 
 from cutepaste.files.forms import FilesEditForm
 from cutepaste.files.models import FSEntry
@@ -28,17 +26,26 @@ def browser(files: List[FSEntry], current_path: str, clipboard_files: List[str],
     )
 
 
+def _get_all_parent_paths(start_path: str) -> Iterator[Tuple[str, str]]:
+    parent_paths = []
+    directories = start_path.split("/")
+    while directories:
+        directory_name = directories[-1]
+        directory_path = "/".join(directories)
+        parent_paths.append((directory_name, directory_path))
+        directories = directories[:-1]
+    return reversed(parent_paths)
+
+
 def filelist(files: List[FSEntry], current_path: str, clipboard_files: List[str]) -> str:
-    parent_path = ""
-    if current_path:
-        parent_path = path.join(current_path, "..")
+    parent_paths = _get_all_parent_paths(current_path)
 
     return render_to_string(
         "files/components/filelist.html",
         context={
             "files": files,
             "total_files": len(files),
-            "parent_path": parent_path,
+            "parent_paths": parent_paths,
             "current_path": current_path,
             "clipboard_files": clipboard_files,
             "total_clipboard_files": len(clipboard_files),
