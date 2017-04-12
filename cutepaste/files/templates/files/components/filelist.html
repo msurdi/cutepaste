@@ -10,7 +10,9 @@
                 {% if forloop.last %}
                     <li class="active">{{ name }}</li>
                 {% else %}
-                    <li><a href="{% url "files:ls" parent_path %}">{{ name }}</a></li>
+                    <li>
+                        <a href="{% url "files:ls" parent_path %}">{{ name }}</a>
+                    </li>
                 {% endif %}
             {% endfor %}
         </ol>
@@ -36,7 +38,12 @@
                 <label class="block">
                     <a href="{% url 'files:ls' file.relative_path %}"
                        class="block {% if file.is_dir %}dir-item{% else %}file-item{% endif %}">
-                        {{ file.name }}{% if file.is_dir %}/{% endif %}
+                        {% if file.is_dir %}
+                            <i class="fa fa-folder fa-lg padding-5"></i>
+                        {% else %}
+                            <i class="fa fa-file-o fa-lg padding-5"></i>
+                        {% endif %}
+                        {{ file.name }}
                     </a>
                 </label>
             </div>
