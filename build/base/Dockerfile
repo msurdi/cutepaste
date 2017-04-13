@@ -3,7 +3,7 @@ MAINTAINER Matias Surdi <matias@surdi.net>
 
 # Install required system packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates gcc g++ curl libicu-dev && \
+    ca-certificates gcc g++ curl libicu-dev libpcre3-dev && \
     rm -r /var/lib/apt/lists/*
 
 # Install node
