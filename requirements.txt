@@ -3,6 +3,6 @@ django-compressor==2.1
 rcssmin==1.0.6
 rjsmin==1.0.12
 django-extensions==1.7.4
-uwsgi==2.0.14
+uwsgi==2.0.15
 PyICU==1.9.5
 djangorestframework==3.6.2
