@@ -22,7 +22,7 @@ def test_index(live_server, webdriver):
 def test_navigate_to_directory(live_server, webdriver):
     webdriver.get(live_server.url + reverse("files:ls", args=[""]))
 
-    dir1_links = webdriver.find_elements_by_link_text("dir1/")
+    dir1_links = webdriver.find_elements_by_link_text("dir1")
     assert len(dir1_links) == 1
 
     dir1_link = dir1_links[0]
@@ -97,7 +97,7 @@ def test_copy_paste_file(live_server, webdriver):
 
     copy_button.click()
 
-    dir1_links = webdriver.find_elements_by_link_text("dir1/")
+    dir1_links = webdriver.find_elements_by_link_text("dir1")
     assert len(dir1_links) == 1
 
     dir1_link = dir1_links[0]
@@ -145,7 +145,7 @@ def test_cut_paste_file(live_server, webdriver):
 
     cut_button.click()
 
-    dir1_links = webdriver.find_elements_by_link_text("dir1/")
+    dir1_links = webdriver.find_elements_by_link_text("dir1")
     assert len(dir1_links) == 1
 
     dir1_link = dir1_links[0]
