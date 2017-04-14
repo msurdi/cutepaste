@@ -42,8 +42,8 @@ def test_ls_file(rf, mocker):
     response = views.ls(request, "/file1")
 
     assert response.status_code == 200
-    assert response.has_header("X-Sendfile")
-    assert response["X-Sendfile"] == "/data/file1"
+    assert response.has_header("X-Accel-Redirect")
+    assert response["X-Accel-Redirect"] == "/data/file1"
     assert not response.content
 
 

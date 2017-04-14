@@ -24,7 +24,8 @@ def ls(request, current_path: str = "") -> HttpResponse:
 
     if file.is_file:
         response = HttpResponse()
-        response["X-Sendfile"] = file.absolute_path
+        response["Content-Type"] = ""  # Let webserver decide this
+        response["X-Accel-Redirect"] = file.absolute_path
         return response
 
     files = service.ls(current_path)
