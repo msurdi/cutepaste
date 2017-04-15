@@ -18,7 +18,7 @@
         </ol>
     {% endif %}
     <div class="list-group files">
-    <input type="hidden" id="current-path" name="current_path" value="{{ current_path }}">
+    <input type="hidden" id="current-path" name="directory" value="{{ directory }}">
     <input type="hidden" id="selection-status" name="selection_status" value="none">
     {% for file in files %}
         <div class="list-group-item clickable">

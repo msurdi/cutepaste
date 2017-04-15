@@ -71,7 +71,7 @@ def test_copy(rf):
 
 def test_paste(rf, mocker):
     move_mock = mocker.patch("cutepaste.files.views.service.move")
-    request = rf.post("/", {"some": "data", "current_path": "target"})
+    request = rf.post("/", {"some": "data", "directory": "target"})
     request.session = {views.CLIPBOARD_SESSION_KEY: ["/file1"], views.OPERATION_SESSION_KEY: views.CUT_OPERATION}
 
     response = views.paste(request)
@@ -87,7 +87,7 @@ def test_trash(rf, mocker):
     remove_mock = mocker.patch("cutepaste.files.views.service.remove")
     ls_mock = mocker.patch("cutepaste.files.views.ls")
     ls_mock.return_value = HttpResponse("ls response", status=200)
-    request = rf.post("/", {"selected": ["/file1"], "current_path": ""})
+    request = rf.post("/", {"selected": ["/file1"], "directory": ""})
 
     response = views.trash(request)
 
@@ -121,7 +121,7 @@ def test_rename(rf, mocker):
     ls_mock = mocker.patch("cutepaste.files.views.ls")
     ls_mock.return_value = HttpResponse("ls response", status=200)
     rename_mock = mocker.patch("cutepaste.files.views.service.rename")
-    request = rf.post("/", {"dir/file1": "file1.renamed", "dir/file2": "file2", "current_path": "dir"})
+    request = rf.post("/", {"dir/file1": "file1.renamed", "dir/file2": "file2", "directory": "dir"})
 
     response = views.rename(request)
 

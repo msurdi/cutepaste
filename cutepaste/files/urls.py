@@ -8,8 +8,8 @@ from . import views
 app_name = "files"
 urlpatterns = [
     url(r'^$', RedirectView.as_view(url=reverse_lazy("files:ls", args=[""]))),
-    url(r'^ls/(?P<current_path>.*)$', views.ls, name="ls"),
-    url(r'^edit/(?P<current_path>.*)$', views.edit, name="edit"),
+    url(r'^ls/(?P<directory>.*)$', views.ls, name="ls"),
+    url(r'^edit/(?P<directory>.*)$', views.edit, name="edit"),
     url(r'^ajax/rename/$', views.rename, name="rename"),
     url(r'^ajax/trash/$', views.trash, name="trash"),
     url(fr'^ajax/select/{settings.CP_VERSION}/$', views.select, name="select"),

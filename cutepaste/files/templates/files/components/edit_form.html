@@ -16,7 +16,7 @@
             </div>
         </div>
     {% endfor %}
-    <input type="hidden" name="current_path" value="{{ current_path }}">
+    <input type="hidden" name="directory" value="{{ directory }}">
     <button type="submit"
             data-ajax
             data-url="{% url "files:rename" %}"

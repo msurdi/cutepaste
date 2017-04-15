@@ -19,8 +19,8 @@ CUT_OPERATION = "cut"
 COPY_OPERATION = "copy"
 
 
-def ls(request, current_path: str = "") -> HttpResponse:
-    file = service.stat(current_path)
+def ls(request, directory: str = "") -> HttpResponse:
+    file = service.stat(directory)
 
     if file.is_file:
         response = HttpResponse()
@@ -28,49 +28,49 @@ def ls(request, current_path: str = "") -> HttpResponse:
         response["X-Accel-Redirect"] = file.absolute_path
         return response
 
-    files = service.ls(current_path)
+    files = service.ls(directory)
     clipboard_files = request.session.get(CLIPBOARD_SESSION_KEY, [])
     return render(request, "files/index.html", {
         "browser": components.browser(
             files=files,
-            current_path=current_path,
+            directory=directory,
             clipboard_files=clipboard_files,
             selection_status="none"),
     })
 
 
-def edit(request, current_path: str = "") -> HttpResponse:
-    files = service.ls(current_path)
+def edit(request, directory: str = "") -> HttpResponse:
+    files = service.ls(directory)
     edit_form = FilesEditForm(request.POST or None, files=files)
 
     return render(request, "files/edit.html", {
-        "current_path": current_path,
+        "directory": directory,
         "edit_form": components.edit_form(
             form=edit_form,
-            current_path=current_path,
+            directory=directory,
         ),
     })
 
 
 @api_view(["post"])
 def rename(request):
-    current_path = request.POST.get("current_path")
-    files = service.ls(current_path)
+    directory = request.POST.get("directory")
+    files = service.ls(directory)
     edit_form = FilesEditForm(request.POST, files=files)
 
     if edit_form.is_valid():
         for relative_path, new_name in edit_form.cleaned_data.items():
-            new_relative_path = path.join(current_path, new_name)
+            new_relative_path = path.join(directory, new_name)
             if relative_path != new_relative_path:
                 service.rename(relative_path, new_relative_path)
-        redirect_url = reverse("files:ls", args=[current_path])
+        redirect_url = reverse("files:ls", args=[directory])
         return ajax_redirect(redirect_url)
 
     return JsonResponse({
         "components": {
             "#edit-form": components.edit_form(
                 form=edit_form,
-                current_path=current_path,
+                directory=directory,
             ),
         }
     })
@@ -79,7 +79,7 @@ def rename(request):
 @api_view(["post"])
 def copy(request) -> HttpResponse:
     clipboard_files = request.POST.getlist("selected", [])
-    current_path = request.POST.get("current_path", "")
+    directory = request.POST.get("directory", "")
     selection_status = request.POST.get("selection_status", "none")
 
     request.session[OPERATION_SESSION_KEY] = COPY_OPERATION
@@ -88,7 +88,7 @@ def copy(request) -> HttpResponse:
     return Response({
         "components": {
             "#buttons": components.buttons(
-                current_path=current_path,
+                directory=directory,
                 clipboard_files=clipboard_files,
                 selection_status=selection_status,
             )
@@ -99,7 +99,7 @@ def copy(request) -> HttpResponse:
 @api_view(["post"])
 def cut(request) -> Response:
     clipboard_files = request.POST.getlist("selected", [])
-    current_path = request.POST.get("current_path", "")
+    directory = request.POST.get("directory", "")
     selection_status = request.POST.get("selection_status", "none")
 
     request.session[OPERATION_SESSION_KEY] = CUT_OPERATION
@@ -108,7 +108,7 @@ def cut(request) -> Response:
     return Response({
         "components": {
             "#buttons": components.buttons(
-                current_path=current_path,
+                directory=directory,
                 clipboard_files=clipboard_files,
                 selection_status=selection_status,
             )
@@ -120,13 +120,13 @@ def cut(request) -> Response:
 @api_view(["get"])
 def select(request) -> Response:
     clipboard_files = request.session.get(CLIPBOARD_SESSION_KEY, [])
-    current_path = request.GET.get("current_path", "")
+    directory = request.GET.get("directory", "")
     selection_status = request.GET.get("selection_status", "none")
 
     return Response({
         "components": {
             "#buttons": components.buttons(
-                current_path=current_path,
+                directory=directory,
                 clipboard_files=clipboard_files,
                 selection_status=selection_status,
             )
@@ -145,20 +145,20 @@ def confirm_trash(request) -> Response:
 
 @api_view(["post"])
 def paste(request) -> HttpResponse:
-    if not request.POST or "current_path" not in request.POST:
+    if not request.POST or "directory" not in request.POST:
         return HttpResponseBadRequest()
 
-    current_path = request.POST["current_path"]
+    directory = request.POST["directory"]
     if request.session[OPERATION_SESSION_KEY] == CUT_OPERATION:
-        service.move(request.session.get(CLIPBOARD_SESSION_KEY, []), current_path)
+        service.move(request.session.get(CLIPBOARD_SESSION_KEY, []), directory)
     elif request.session[OPERATION_SESSION_KEY] == COPY_OPERATION:
-        service.copy(request.session.get(CLIPBOARD_SESSION_KEY, []), current_path)
+        service.copy(request.session.get(CLIPBOARD_SESSION_KEY, []), directory)
     else:
         return HttpResponseBadRequest("Cannot paste from selected operation")
 
     request.session[CLIPBOARD_SESSION_KEY] = []
     request.session[OPERATION_SESSION_KEY] = None
-    return ajax_redirect(reverse("files:ls", args=[current_path]))
+    return ajax_redirect(reverse("files:ls", args=[directory]))
 
 
 @api_view(["post"])
@@ -166,6 +166,6 @@ def trash(request) -> HttpResponse:
     if "selected" not in request.POST:
         return HttpResponseBadRequest()
 
-    current_path = request.POST["current_path"]
+    directory = request.POST["directory"]
     service.remove(request.POST.getlist("selected", []))
-    return ajax_redirect(reverse("files:ls", args=[current_path]))
+    return ajax_redirect(reverse("files:ls", args=[directory]))
