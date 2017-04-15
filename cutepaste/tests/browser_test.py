@@ -54,7 +54,6 @@ def test_breadcrumbs_in_subdirs(live_server, webdriver):
     assert len(breadcrumb_parent) == 1
 
 
-
 @slow
 def test_remove_file(live_server, webdriver):
     webdriver.get(live_server.url + reverse("files:ls", args=[""]))

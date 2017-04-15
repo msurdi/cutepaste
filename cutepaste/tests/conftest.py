@@ -1,12 +1,11 @@
 import os
-import tempfile
+import shutil
 
 import pytest
-import shutil
+from django.conf import settings
 from pyvirtualdisplay import Display
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
-from django.conf import settings
 
 REPORTS_DIR = "reports"
 
