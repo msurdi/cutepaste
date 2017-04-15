@@ -47,7 +47,7 @@ def test_breadcrumbs(live_server, webdriver):
 def test_breadcrumbs_in_subdirs(live_server, webdriver):
     webdriver.get(live_server.url + reverse("files:ls", args=["dir1/subdir1"]))
 
-    breadcrumbs_list = webdriver.find_elements_by_css_selector(".breadcrumb-item")
+    breadcrumbs_list = webdriver.find_elements_by_css_selector(".breadcrumb li")
     assert len(breadcrumbs_list) == 3
 
     breadcrumb_parent = webdriver.find_elements_by_css_selector("a[href='/ls/dir1']")
