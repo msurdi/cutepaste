@@ -8,7 +8,7 @@
         <label id="select-all-button"
                data-ajax
                data-url="{% url "files:select" %}"
-               data-include="#filelist input,#buttons input"
+               data-include="#current-path,#selection-status,#buttons input"
                data-action="trigger:select-all;trigger:selection-change"
                title="Select all"
                class="btn btn-default no-outline">
@@ -19,7 +19,7 @@
         <label id="select-none-button"
                data-ajax
                data-url="{% url "files:select" %}"
-               data-include="#filelist input,#buttons input"
+               data-include="#current-path,#selection-status,#buttons input"
                data-action="trigger:select-none;trigger:selection-change"
                title="Unselect all"
                class="btn btn-default no-outline">
