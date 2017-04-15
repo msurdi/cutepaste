@@ -13,15 +13,29 @@ def test_stat():
 def test_ls(mocker, settings):
     def list_of_files(path):
         assert path == "/data/subdir/somedir"
-        return ["file1", "file2", "file3"]
+        return ["file1", "file2", "file3", "dir2", "dir1"]
+
+    def is_file(_, name):
+        return name.startswith("file")
 
     settings.CP_ROOT_DIR = "/data"
     listdir_mock = mocker.patch("cutepaste.files.service.os.listdir")
     listdir_mock.side_effect = list_of_files
 
+    fsentry_mock = mocker.patch("cutepaste.files.service.FSEntry.is_file")
+    fsentry_mock.side_effect = is_file
+
     entries = service.ls("subdir/somedir")
 
-    assert len(entries) == 3
+    assert len(entries) == 5
+
+    # Check ordering
+    assert entries[0].name == "dir1"
+    assert entries[1].name == "dir2"
+    assert entries[2].name == "file1"
+    assert entries[3].name == "file2"
+    assert entries[4].name == "file3"
+
 
 
 def test_ls_with_absolute_dir(mocker, settings):

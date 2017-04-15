@@ -1,8 +1,9 @@
+import locale
 import os
 import shutil
-import locale
 from os import path
-from typing import Callable, List, Any
+from typing import Any, Callable, List
+
 from PyICU import Collator, Locale
 from django.conf import settings
 
@@ -22,6 +23,10 @@ def _absolute_path(file_path: str) -> str:
     return path.join(root_path, _relative_path(file_path))
 
 
+def _sort_files(files: List[FSEntry]) -> List[FSEntry]:
+    return sorted(files, key=lambda f: (f.is_file, _collator.getSortKey(f.name)))
+
+
 def ls(files_path: str) -> List[FSEntry]:
     root_path = getattr(settings, "CP_ROOT_DIR", "/data")
     relative_files_path = _relative_path(files_path)
@@ -32,7 +37,7 @@ def ls(files_path: str) -> List[FSEntry]:
             file_relative_path = path.join(relative_files_path, filename)
             file_absolute_path = path.join(root_absolute_path, filename)
             entries.append(FSEntry(file_absolute_path, file_relative_path))
-    return sorted(entries, key=lambda e: _collator.getSortKey(e.name))
+    return _sort_files(entries)
 
 
 def stat(file_path) -> FSEntry:
