@@ -42,6 +42,9 @@ def test_breadcrumbs(live_server, webdriver):
 
     assert len(home_breacrumb) == 1
 
+
+@slow
+def test_breadcrumbs_in_subdirs(live_server, webdriver):
     webdriver.get(live_server.url + reverse("files:ls", args=["dir1/subdir1"]))
 
     breadcrumbs_list = webdriver.find_elements_by_css_selector("#breadcrumbs li")
