@@ -32,7 +32,8 @@ def webdriver(request):
         driver.save_screenshot(f"reports/{test_name}.png")
         with open(f"reports/{test_name}.html", "w") as f:
             f.write(driver.page_source)
-        print(driver.page_source)
+        if os.environ.get("CI_RUN"):
+            print(driver.page_source)
     driver.quit()
     display.stop()
 

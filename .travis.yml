@@ -7,4 +7,4 @@ before_install:
   - sudo apt-get -y update
   - DEBIAN_FRONTEND=noninteractive sudo apt-get -y -o Dpkg::Options::="--force-confnew" --force-yes install docker-engine
 script:
-  - make test
+  - CI_RUN=true make test
