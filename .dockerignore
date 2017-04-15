@@ -1,6 +1,6 @@
-/.git
-/.gitignore
-/reports
-/node_modules
-/.*
-/Makefile
+.git
+.gitignore
+reports
+node_modules
+.*
+Makefile
