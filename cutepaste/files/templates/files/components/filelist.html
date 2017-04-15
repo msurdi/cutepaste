@@ -1,16 +1,16 @@
 <div id="filelist">
     {% if parent_paths %}
         <ol class="breadcrumb no-margin" id="breadcrumbs">
-            <li>
+            <li class="breadcrumb-item">
                 <a href="{% url "files:ls" "" %}">
                     <i class="fa fa-home fa-lg"></i>
                 </a>
             </li>
             {% for name, parent_path in parent_paths %}
                 {% if forloop.last %}
-                    <li class="active">{{ name }}</li>
+                    <li class="active breadcrumb-item">{{ name }}</li>
                 {% else %}
-                    <li>
+                    <li class="breadcrumb-item">
                         <a href="{% url "files:ls" parent_path %}">{{ name }}</a>
                     </li>
                 {% endif %}
