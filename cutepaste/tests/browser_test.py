@@ -47,7 +47,7 @@ def test_breadcrumbs(live_server, webdriver):
 def test_breadcrumbs_in_subdirs(live_server, webdriver):
     webdriver.get(live_server.url + reverse("files:ls", args=["dir1/subdir1"]))
 
-    WebDriverWait(webdriver, 2).until(
+    WebDriverWait(webdriver, 6).until(
         EC.visibility_of_element_located((By.CSS_SELECTOR, "#breadcrumbs li")))
 
     breadcrumbs_list = webdriver.find_elements_by_css_selector("#breadcrumbs li")
