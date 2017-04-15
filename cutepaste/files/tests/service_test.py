@@ -37,7 +37,6 @@ def test_ls(mocker, settings):
     assert entries[4].name == "file3"
 
 
-
 def test_ls_with_absolute_dir(mocker, settings):
     def ensure_listdir_inside_data_dir(path):
         assert path == "/data/root"
