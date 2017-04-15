@@ -4,6 +4,8 @@ services:
     build:
       context: ../..
       dockerfile: build/prod/Dockerfile
+      args:
+        version: ${VERSION}
     image: msurdi/cutepaste:latest
     command: "./start.sh"
     ports:
