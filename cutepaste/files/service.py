@@ -7,7 +7,7 @@ from typing import Any, Callable, List
 from PyICU import Collator, Locale
 from django.conf import settings
 
-from cutepaste.files.models import FSEntry
+from cutepaste.files.models import File
 
 _collator = Collator.createInstance(Locale(locale.getdefaultlocale()[0]))
 
@@ -23,26 +23,26 @@ def _absolute_path(file_path: str) -> str:
     return path.join(root_path, _relative_path(file_path))
 
 
-def _sort_files(files: List[FSEntry]) -> List[FSEntry]:
+def _sort_files(files: List[File]) -> List[File]:
     return sorted(files, key=lambda f: (f.is_file, _collator.getSortKey(f.name)))
 
 
-def ls(files_path: str) -> List[FSEntry]:
+def ls(files_path: str) -> List[File]:
     root_path = getattr(settings, "CP_ROOT_DIR", "/data")
     relative_files_path = _relative_path(files_path)
     root_absolute_path = os.path.join(root_path, relative_files_path)
-    entries = []
+    files = []
     for filename in os.listdir(root_absolute_path):
         if settings.CP_SHOW_HIDDEN_FILES or not filename.startswith("."):
             file_relative_path = path.join(relative_files_path, filename)
             file_absolute_path = path.join(root_absolute_path, filename)
-            entries.append(FSEntry(file_absolute_path, file_relative_path))
-    return _sort_files(entries)
+            files.append(File(file_absolute_path, file_relative_path))
+    return _sort_files(files)
 
 
-def stat(file_path) -> FSEntry:
+def stat(file_path) -> File:
     absolute_path = _absolute_path(file_path)
-    return FSEntry(absolute_path, file_path)
+    return File(absolute_path, file_path)
 
 
 def _perfom_fs_operation(operation: Callable[[str, str], Any], source_files: List[str], destination_path: str) -> None:

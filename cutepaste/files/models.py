@@ -1,7 +1,7 @@
 from os import path
 
 
-class FSEntry:
+class File:
     def __init__(self, absolute_path: str, relative_path: str) -> None:
         self.absolute_path = absolute_path
         self.relative_path = relative_path

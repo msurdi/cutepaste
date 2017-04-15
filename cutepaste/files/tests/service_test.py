@@ -1,13 +1,13 @@
 from unittest.mock import call
 
 from .. import service
-from ..models import FSEntry
+from ..models import File
 
 
 def test_stat():
-    entry = service.stat("somefile")
+    file = service.stat("somefile")
 
-    assert isinstance(entry, FSEntry)
+    assert isinstance(file, File)
 
 
 def test_ls(mocker, settings):
@@ -22,19 +22,19 @@ def test_ls(mocker, settings):
     listdir_mock = mocker.patch("cutepaste.files.service.os.listdir")
     listdir_mock.side_effect = list_of_files
 
-    fsentry_mock = mocker.patch("cutepaste.files.service.FSEntry.is_file")
-    fsentry_mock.side_effect = is_file
+    file_mock = mocker.patch("cutepaste.files.service.File.is_file")
+    file_mock.side_effect = is_file
 
-    entries = service.ls("subdir/somedir")
+    files = service.ls("subdir/somedir")
 
-    assert len(entries) == 5
+    assert len(files) == 5
 
     # Check ordering
-    assert entries[0].name == "dir1"
-    assert entries[1].name == "dir2"
-    assert entries[2].name == "file1"
-    assert entries[3].name == "file2"
-    assert entries[4].name == "file3"
+    assert files[0].name == "dir1"
+    assert files[1].name == "dir2"
+    assert files[2].name == "file1"
+    assert files[3].name == "file2"
+    assert files[4].name == "file3"
 
 
 def test_ls_with_absolute_dir(mocker, settings):

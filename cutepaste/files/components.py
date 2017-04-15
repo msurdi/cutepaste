@@ -2,7 +2,7 @@ from django.template.loader import render_to_string
 from typing import Iterator, List, Tuple
 
 from cutepaste.files.forms import FilesEditForm
-from cutepaste.files.models import FSEntry
+from cutepaste.files.models import File
 
 
 def confirm_trash() -> str:
@@ -12,7 +12,7 @@ def confirm_trash() -> str:
     )
 
 
-def browser(files: List[FSEntry], current_path: str, clipboard_files: List[str], selection_status: str) -> str:
+def browser(files: List[File], current_path: str, clipboard_files: List[str], selection_status: str) -> str:
     return render_to_string(
         "files/components/browser.html",
         context={
@@ -37,7 +37,7 @@ def _get_all_parent_paths(start_path: str) -> Iterator[Tuple[str, str]]:
     return reversed(parent_paths)
 
 
-def filelist(files: List[FSEntry], current_path: str, clipboard_files: List[str]) -> str:
+def filelist(files: List[File], current_path: str, clipboard_files: List[str]) -> str:
     parent_paths = _get_all_parent_paths(current_path)
 
     return render_to_string(

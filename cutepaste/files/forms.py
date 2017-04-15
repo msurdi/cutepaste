@@ -3,11 +3,11 @@ from typing import List
 from django import forms
 from django.core.validators import RegexValidator
 
-from cutepaste.files.models import FSEntry
+from cutepaste.files.models import File
 
 
 class FilesEditForm(forms.Form):
-    def __init__(self, *args, files: List[FSEntry], **kwargs) -> None:
+    def __init__(self, *args, files: List[File], **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
         for file in files:
