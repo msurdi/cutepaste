@@ -12,7 +12,10 @@ server side files.
 Trying it out
 -------------
 
-    docker run -d msurdi/cutepaste -v /path/to/your/files:/data -p8080:8080
+*Note*: Do not run as root
+
+
+    docker run -d -v /path/to/your/files:/data -p 8080:8080 msurdi/cutepaste:1.0
  
  
 To run it with custom settings, copy [this file](https://github.com/msurdi/cutepaste/blob/master/cutepaste/settings/prod.py) to
