@@ -47,6 +47,23 @@ def test_ls_file(rf, mocker):
     assert not response.content
 
 
+def test_ls_unicode_file(rf, mocker):
+    def stat_results(path):
+        if path == "/unicod€ f|le":
+            return FSEntryMock("unicod€ f|le", is_file=True)
+
+    stat_mock = mocker.patch("cutepaste.files.views.service.stat")
+    stat_mock.side_effect = stat_results
+    request = rf.get("/unicod%E2%82%AC%20f%7Cle")
+
+    response = views.ls(request, "/unicod%E2%82%AC%20f%7Cle")
+
+    assert response.status_code == 200
+    assert response.has_header("X-Accel-Redirect")
+    assert response["X-Accel-Redirect"] == "/data/unicod%E2%82%AC%20f%7Cle"
+    assert not response.content
+
+
 def test_cut(rf):
     request = rf.post("/", {"selected": ["/file1", "/file2"]})
     request.session = {}
