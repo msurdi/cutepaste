@@ -36,7 +36,7 @@
                        value="{{ file.relative_path }}"
                        class="data-check">
                 <label class="block">
-                    <a href="{% url 'files:ls' file.relative_path %}"
+                    <a href="{% url 'files:ls' file.relative_path|urlencode %}"
                        class="block {% if file.is_dir %}dir-item{% else %}file-item{% endif %}">
                         {% if file.is_dir %}
                             <i class="fa fa-folder fa-lg padding-5"></i>

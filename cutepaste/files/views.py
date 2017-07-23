@@ -1,4 +1,5 @@
 from os import path
+from urllib.parse import quote, unquote
 
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import render
@@ -20,12 +21,12 @@ COPY_OPERATION = "copy"
 
 
 def ls(request, directory: str = "") -> HttpResponse:
-    file = service.stat(directory)
+    file = service.stat(unquote(directory))
 
     if file.is_file:
         response = HttpResponse()
         response["Content-Type"] = ""  # Let webserver decide this
-        response["X-Accel-Redirect"] = file.absolute_path
+        response["X-Accel-Redirect"] = quote(file.absolute_path)
         return response
 
     files = service.ls(directory)
