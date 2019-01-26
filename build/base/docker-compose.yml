@@ -2,9 +2,6 @@ version: "2"
 services:
   base:
     build:
-      args:
-        uid: ${UID}
-        gid: ${GID}
       context: ../..
       dockerfile: build/base/Dockerfile
     image: msurdi/cutepaste:base

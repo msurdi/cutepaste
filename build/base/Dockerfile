@@ -14,10 +14,8 @@ RUN curl -sL https://deb.nodesource.com/setup_6.x | bash && \
 RUN pip install pip==9.0.1
 
 # Create user
-ARG uid=1000
-ARG gid=1000
-RUN groupadd --gid $gid cutepaste
-RUN useradd -m -u $uid -g $gid cutepaste
+RUN groupadd --gid 1000 cutepaste
+RUN useradd -m -u 1000 -g 1000 cutepaste
 
 RUN mkdir /code && chown -R cutepaste:cutepaste /code /home/cutepaste
 WORKDIR /code

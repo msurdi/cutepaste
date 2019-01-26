@@ -18,12 +18,6 @@ SHELL := $(shell which bash)
 # Get docker path or an empty string
 DOCKER := $(shell command -v docker)
 
-# Get the main unix group for the user running make (to be used by docker-compose later)
-export GID := $(shell id -g)
-
-# Get the unix user id for the user running make (to be used by docker-compose later)
-export UID := $(shell id -u)
-
 # Bash history file for container shell
 HISTORY_FILE := ~/.bash_history.$(SERVICE_NAME)
 
