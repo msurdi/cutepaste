@@ -1,9 +1,8 @@
 FROM python:3.6-slim
-MAINTAINER Matias Surdi <matias@surdi.net>
 
 # Install required system packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates gcc g++ curl libicu-dev libpcre3-dev && \
+    ca-certificates gcc g++ curl libicu-dev libpcre3-dev gnupg && \
     rm -r /var/lib/apt/lists/*
 
 # Install node
