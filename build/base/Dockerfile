@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Install node
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash && \
-    apt-get install nodejs && \
+    apt-get install -y nodejs && \
     rm -r /var/lib/apt/lists/*
 
 # Upgrade base image pip
